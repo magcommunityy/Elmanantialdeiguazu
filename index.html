@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Origen Trade Bridge — Ejecución automática de señales en MetaTrader 5</title>
-<meta name="description" content="El robot que recibe la señal y la ejecuta en tu MetaTrader 5: captura en tiempo real, ejecución en tramos y gestión de riesgo automática. Suscripción mensual o anual.">
+<meta name="description" content="Señales profesionales y automatización en un solo lugar: el sistema recibe las señales y las ejecuta en tu MetaTrader 5 con gestión de riesgo que protege tu capital (break-even, trailing, cierre por tramos).">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Origen Trade Bridge — Ejecución automática en MT5">
-<meta property="og:description" content="Recibí la señal. El robot la ejecuta en MetaTrader 5 respetando tu riesgo.">
+<meta property="og:title" content="Origen Trade Bridge — Señales profesionales + automatización en MT5">
+<meta property="og:description" content="Señales profesionales y automatización en un solo lugar, con gestión de riesgo gestionada por el robot para proteger tu capital.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,6 +38,24 @@ svg{display:block}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);font-weight:500}
 .eyebrow::before{content:"";width:24px;height:1px;background:var(--cyan);opacity:.6}
+.diff{padding:90px 0;border-bottom:1px solid var(--line)}
+.diff-head{text-align:center;max-width:660px;margin:0 auto 48px}
+.diff-head h2{font-size:clamp(1.9rem,4.2vw,2.9rem);margin-bottom:14px}
+.diff-head p{color:var(--muted);font-size:1.04rem}
+.diff-cols{display:grid;grid-template-columns:1fr auto 1fr;gap:28px;align-items:stretch;max-width:920px;margin:0 auto}
+.diff-col{background:var(--bg-3);border:1px solid var(--line);border-radius:16px;padding:32px}
+.diff-col .dc-ico{width:48px;height:48px;border-radius:12px;background:rgba(56,189,248,.08);border:1px solid var(--line-2);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.diff-col .dc-ico svg{width:24px;height:24px;stroke:var(--cyan);fill:none;stroke-width:1.5}
+.diff-col h3{font-size:1.4rem;margin-bottom:10px}
+.diff-col p{color:var(--muted);font-size:.95rem}
+.diff-plus{display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-size:2rem;color:var(--cyan);font-weight:600}
+.diff-result{max-width:920px;margin:24px auto 0;text-align:center;padding:26px;border:1px solid var(--line-2);border-radius:16px;
+  background:linear-gradient(135deg,rgba(56,189,248,.08),transparent)}
+.diff-result b{color:var(--cyan)}
+.diff-result .dr-title{font-family:'Space Grotesk';font-size:1.3rem;color:var(--text);font-weight:600;margin-bottom:6px}
+.diff-result p{color:var(--muted);font-size:.95rem}
+@media(max-width:720px){.diff-cols{grid-template-columns:1fr}.diff-plus{transform:rotate(90deg);padding:4px 0}}
 .section{padding:120px 0;position:relative}
 .section-head{max-width:660px;margin-bottom:60px}
 .section-head.center{margin-left:auto;margin-right:auto;text-align:center}
@@ -130,9 +148,35 @@ svg{display:block}
 .rule:hover{border-color:var(--line-2)}
 .rule .cond{flex:1;color:var(--text);font-size:.94rem}
 .rule .act{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--amber);letter-spacing:.04em;text-align:right;white-space:nowrap}
+.protect-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px}
+.protect-card{background:linear-gradient(165deg,rgba(56,189,248,.05),var(--bg-3));border:1px solid var(--line-2);border-radius:16px;padding:28px;position:relative;overflow:hidden}
+.protect-card .pc-step{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;color:var(--cyan);margin-bottom:14px;text-transform:uppercase}
+.protect-card h3{font-size:1.35rem;margin-bottom:10px}
+.protect-card p{color:var(--muted);font-size:.92rem}
+.protect-card .pc-viz{display:flex;align-items:center;gap:6px;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted-2)}
+.protect-card .pc-viz .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px rgba(56,229,255,.5)}
+.protect-card .pc-viz .arw{color:var(--cyan-deep)}
+@media(max-width:840px){.protect-cards{grid-template-columns:1fr}}
 .controls-list{display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start}
 .chip{padding:9px 16px;border:1px solid var(--line);border-radius:30px;font-size:.85rem;color:var(--muted);background:var(--bg-2);transition:.2s}
 .chip:hover{border-color:var(--line-2);color:var(--text)}
+.pain-wrap{max-width:920px;margin:0 auto}
+.pain-lead{font-family:'Space Grotesk';font-size:clamp(1.5rem,3.4vw,2.2rem);font-weight:600;line-height:1.3;text-align:center;margin-bottom:44px;color:var(--text)}
+.pain-lead b{color:var(--cyan)}
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:40px}
+.pain-item{background:var(--bg-3);border:1px solid var(--line);border-radius:16px;padding:28px;transition:.3s}
+.pain-item:hover{border-color:var(--line-2);transform:translateY(-3px)}
+.pain-item .pi-ico{width:44px;height:44px;border-radius:11px;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.pain-item .pi-ico svg{width:22px;height:22px;stroke:var(--down);fill:none;stroke-width:1.5}
+.pain-item h3{font-size:1.2rem;margin-bottom:8px}
+.pain-item p{color:var(--muted);font-size:.92rem}
+.pain-turn{text-align:center;padding:36px;border:1px solid var(--line-2);border-radius:18px;
+  background:linear-gradient(135deg,rgba(56,189,248,.08),transparent)}
+.pain-turn .pt-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
+.pain-turn h3{font-size:clamp(1.5rem,3.2vw,2rem);margin-bottom:12px}
+.pain-turn p{color:var(--muted);font-size:1rem;max-width:560px;margin:0 auto 24px}
+@media(max-width:840px){.pain-grid{grid-template-columns:1fr}}
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px}
 .stat{background:var(--bg-3);border:1px solid var(--line);border-radius:var(--radius);padding:28px;text-align:center;position:relative}
 .stat .val{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;color:var(--cyan);line-height:1;font-weight:600}
@@ -405,9 +449,9 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:100px}
 <header class="hero">
   <div class="wrap hero-grid">
     <div class="reveal in">
-      <div class="hero-badge"><span class="live"></span>SISTEMA · MetaTrader 5 · EJECUCIÓN AUTOMÁTICA</div>
-      <h1>Recibí la señal.<br><span class="grad">El robot la ejecuta.</span></h1>
-      <p class="sub" data-cfg="hero.sub">Conectá tu cuenta de MetaTrader 5, configurá tu riesgo y dejá que el sistema ejecute automáticamente las señales autorizadas. Sin copiar operaciones a mano.</p>
+      <div class="hero-badge"><span class="live"></span>AUTOMATIZACIÓN · SEÑALES PROFESIONALES · MT5</div>
+      <h1>Señales profesionales y automatización,<br><span class="grad">en un solo lugar.</span></h1>
+      <p class="sub" data-cfg="hero.sub">Un sistema que recibe señales profesionales y las ejecuta automáticamente en tu MetaTrader 5, con gestión de riesgo gestionada por el robot para proteger tu capital. Sin copiar operaciones a mano, sin decisiones emocionales.</p>
       <div class="hero-actions">
         <a href="#planes" class="btn btn-primary">Ver planes<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a href="#demo" class="btn btn-ghost">Ver cómo funciona</a>
@@ -458,6 +502,33 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:100px}
     <span class="strip-item"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-6.2-8.5"/><path d="M21 4v5h-5"/></svg>Reconexión ante cortes</span>
   </div>
 </div>
+
+<section class="diff">
+  <div class="wrap">
+    <div class="diff-head reveal">
+      <span class="eyebrow">Qué hace diferente a Origen Trade Bridge</span>
+      <h2>Dos cosas que suelen estar separadas, en un solo sistema.</h2>
+      <p>La mayoría te vende señales por un lado, o un robot por el otro. Acá las dos cosas trabajan juntas y automatizadas.</p>
+    </div>
+    <div class="diff-cols reveal">
+      <div class="diff-col">
+        <div class="dc-ico"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
+        <h3>Señales profesionales</h3>
+        <p>El sistema recibe señales profesionales validadas y las interpreta automáticamente. No dependés de estar mirando gráficos ni de copiar nada a mano.</p>
+      </div>
+      <div class="diff-plus">+</div>
+      <div class="diff-col">
+        <div class="dc-ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div>
+        <h3>Automatización real</h3>
+        <p>El robot ejecuta en tu MetaTrader 5, divide en tramos y administra cada operación con su gestión de riesgo. Trabaja de forma desatendida.</p>
+      </div>
+    </div>
+    <div class="diff-result reveal">
+      <div class="dr-title">El robot no solo ejecuta: <b>protege tu capital</b>.</div>
+      <p>Break-even automático, trailing stop y cierre parcial por tramos — la operación se gestiona sola para cuidar lo que ya ganaste.</p>
+    </div>
+  </div>
+</section>
 
 <section class="section" id="problema">
   <div class="wrap">
@@ -558,9 +629,33 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:100px}
 <section class="section" id="riesgo">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="eyebrow">SHIELD · Protección operativa</span>
-      <h2>Automatización sin perder el control.</h2>
-      <p>Automatizar no significa operar sin límites. SHIELD supervisa cada operación y detiene el sistema cuando se cruzan las condiciones que definiste. Es un sistema de protección, no una garantía contra pérdidas.</p>
+      <span class="eyebrow">SHIELD · Protección de capital</span>
+      <h2>El robot no solo ejecuta: protege tu capital.</h2>
+      <p>La diferencia está acá. Una vez abierta la operación, el sistema la administra solo para cuidar lo que ya ganaste — con mecanismos que un trader manual no logra sostener con disciplina en cada operación.</p>
+    </div>
+    <div class="protect-cards">
+      <div class="protect-card reveal">
+        <div class="pc-step">Mecanismo 01</div>
+        <h3>Break-even automático</h3>
+        <p>Cuando la operación avanza a favor, el robot mueve el stop loss al punto de entrada. A partir de ahí, la operación ya no puede volverse pérdida.</p>
+        <div class="pc-viz"><span class="dot"></span>Entry <span class="arw">→</span> SL movido a Entry <span class="arw">→</span> riesgo 0</div>
+      </div>
+      <div class="protect-card reveal">
+        <div class="pc-step">Mecanismo 02</div>
+        <h3>Trailing stop</h3>
+        <p>A medida que el precio sigue a favor, el stop acompaña la operación de forma dinámica, asegurando ganancia progresiva sin cortar la corrida antes de tiempo.</p>
+        <div class="pc-viz"><span class="dot"></span>SL sigue al precio <span class="arw">→</span> asegura avance</div>
+      </div>
+      <div class="protect-card reveal">
+        <div class="pc-step">Mecanismo 03</div>
+        <h3>Cierre parcial por tramos</h3>
+        <p>La operación se divide en tres tramos con objetivos distintos. El robot cierra parcial en cada nivel, tomando ganancia por etapas y dejando correr el resto.</p>
+        <div class="pc-viz"><span class="dot"></span>TP1 <span class="arw">→</span> TP2 <span class="arw">→</span> TP3</div>
+      </div>
+    </div>
+    <div class="section-head reveal" style="margin-top:20px">
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.2rem)">Y además, límites que frenan al robot.</h2>
+      <p>Automatizar no significa operar sin control. SHIELD supervisa cada operación y detiene el sistema cuando se cruzan las condiciones que definiste. Es protección, no una garantía contra pérdidas.</p>
     </div>
     <div class="shield-grid">
       <div class="shield-rules">
@@ -573,11 +668,11 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:100px}
       <div class="reveal">
         <p style="color:var(--muted);margin-bottom:18px;font-size:.95rem">Controles configurables:</p>
         <div class="controls-list">
-          <span class="chip">Riesgo por operación</span><span class="chip">Pérdida diaria máxima</span><span class="chip">Posiciones máximas</span><span class="chip">Control de spread</span><span class="chip">Sesiones de trading</span><span class="chip">Pérdidas consecutivas</span><span class="chip">Stop de emergencia</span><span class="chip">Stop loss en escalera</span>
+          <span class="chip">Riesgo por operación</span><span class="chip">Pérdida diaria máxima</span><span class="chip">Posiciones máximas</span><span class="chip">Control de spread</span><span class="chip">Sesiones de trading</span><span class="chip">Pérdidas consecutivas</span><span class="chip">Stop de emergencia</span><span class="chip">Break-even</span><span class="chip">Trailing stop</span><span class="chip">Cierre por tramos</span>
         </div>
         <div class="card" style="margin-top:22px">
-          <h3 style="font-size:1.25rem">Stop loss en escalera</h3>
-          <p>A medida que la operación avanza, el sistema mueve el stop loss automáticamente — primero al punto de entrada, luego a niveles de resultado asegurado — reduciendo la exposición sin intervención manual.</p>
+          <h3 style="font-size:1.25rem">Todo gestionado por el robot</h3>
+          <p>Break-even, trailing y cierre parcial no dependen de que estés presente: el robot los aplica en cada operación de forma automática, con la misma disciplina siempre. Esa constancia es lo que protege el capital a lo largo del tiempo.</p>
         </div>
       </div>
     </div>
@@ -585,29 +680,36 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:100px}
 </section>
 
 <section class="section" id="stats" style="background:var(--bg-2)">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Datos antes que promesas</span>
-      <h2>Los números, cuando estén, van acá.</h2>
-      <p>Esta sección está preparada para mostrar métricas reales de operación. Hasta entonces, los valores son marcadores de posición.</p>
+  <div class="wrap pain-wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">¿Te pasa esto?</span>
+      <h2>Operar a mano te desgasta más de lo que parece.</h2>
     </div>
-    <div class="stats-grid">
-      <div class="stat reveal"><div class="val" data-cfg="stats.profitFactor">[PROFIT FACTOR]</div><div class="lbl">Profit factor</div></div>
-      <div class="stat reveal"><div class="val" data-cfg="stats.winRate">[WIN RATE]</div><div class="lbl">Win rate</div></div>
-      <div class="stat reveal"><div class="val" data-cfg="stats.drawdown">[MAX DD]</div><div class="lbl">Max drawdown</div></div>
-      <div class="stat reveal"><div class="val" data-cfg="stats.trades">[TRADES]</div><div class="lbl">Operaciones</div></div>
-      <div class="stat reveal"><div class="val" data-cfg="stats.period">[PERIOD]</div><div class="lbl">Período</div></div>
-      <div class="stat reveal"><div class="val" data-cfg="stats.return">[RETURN]</div><div class="lbl">Retorno</div></div>
+    <p class="pain-lead reveal">Cansado de <b>copiar señales y llegar tarde</b>, de mover el stop por impulso, de estar pegado a la pantalla para no perderte una entrada.</p>
+    <div class="pain-grid">
+      <div class="pain-item reveal">
+        <div class="pi-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Llegás tarde a la entrada</h3>
+        <p>Para cuando viste la señal y la cargaste a mano, el precio ya se movió. La operación que era buena, dejó de serlo.</p>
+      </div>
+      <div class="pain-item reveal">
+        <div class="pi-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 12h8M8 16h5"/></svg></div>
+        <h3>Errores al copiar</h3>
+        <p>Un lote mal calculado, un stop en el lugar equivocado, un número tipeado apurado. Copiar a mano, operación tras operación, cansa y falla.</p>
+      </div>
+      <div class="pain-item reveal">
+        <div class="pi-ico"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>La emoción te gana</h3>
+        <p>Cerrás antes por miedo, corrés el stop por ansiedad, dudás en la entrada. Las mejores reglas no sirven si no las cumplís siempre.</p>
+      </div>
     </div>
-    <div class="equity reveal">
-      <div class="equity-head"><span>CURVA DE EQUITY · placeholder</span><span>[PERÍODO]</span></div>
-      <svg viewBox="0 0 800 200" preserveAspectRatio="none" style="width:100%;height:180px" aria-label="Curva de equity — marcador de posición">
-        <defs><linearGradient id="eq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38E5FF" stop-opacity=".3"/><stop offset="1" stop-color="#38E5FF" stop-opacity="0"/></linearGradient></defs>
-        <path d="M0 170 L120 150 L240 158 L360 120 L480 130 L600 80 L720 92 L800 55" fill="none" stroke="#38E5FF" stroke-width="2"/>
-        <path d="M0 170 L120 150 L240 158 L360 120 L480 130 L600 80 L720 92 L800 55 L800 200 L0 200 Z" fill="url(#eq)"/>
-      </svg>
+    <div class="pain-turn reveal">
+      <div class="pt-eyebrow">La alternativa</div>
+      <h3>Dejá de hacer la parte que te desgasta.</h3>
+      <p>El robot recibe la señal, calcula el lote, entra a tiempo y gestiona el riesgo con la misma disciplina en cada operación. Vos dejás de estar pegado a la pantalla.</p>
+      <a href="#planes" class="btn btn-primary">Ver planes
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
-    <p class="mono" style="text-align:center;color:var(--muted-2);font-size:.76rem;margin-top:22px;letter-spacing:.05em">Los resultados históricos no garantizan resultados futuros.</p>
   </div>
 </section>
 
@@ -725,11 +827,10 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:100px}
           <p class="transp-quote" style="margin-top:16px">"Un sistema serio también muestra sus pérdidas. No prometemos resultados garantizados: mostramos datos, explicamos los riesgos y dejamos que cada usuario decida cuánto está dispuesto a asumir."</p>
         </div>
         <div class="transp-metrics">
-          <div class="tm"><div class="k">Ganancias</div><div class="v" data-cfg="transparency.wins">[DATO]</div></div>
-          <div class="tm"><div class="k">Pérdidas</div><div class="v" data-cfg="transparency.losses">[DATO]</div></div>
-          <div class="tm"><div class="k">Drawdown</div><div class="v" data-cfg="transparency.dd">[DATO]</div></div>
-          <div class="tm"><div class="k">Operaciones</div><div class="v" data-cfg="transparency.trades">[DATO]</div></div>
-          <div class="tm" style="grid-column:1/-1"><div class="k">Período analizado</div><div class="v" data-cfg="transparency.period">[PERÍODO]</div></div>
+          <div class="tm"><div class="k">Sin promesas</div><div class="v" style="font-size:1.15rem">No garantizamos ganancias</div></div>
+          <div class="tm"><div class="k">Riesgo claro</div><div class="v" style="font-size:1.15rem">Explicado desde el inicio</div></div>
+          <div class="tm"><div class="k">Vos decidís</div><div class="v" style="font-size:1.15rem">Cuánto riesgo asumís</div></div>
+          <div class="tm"><div class="k">Herramienta</div><div class="v" style="font-size:1.15rem">Software, no asesoría</div></div>
         </div>
       </div>
     </div>
@@ -918,9 +1019,7 @@ const CONFIG = {
       { code:"PABLOK", discount:10, commission:25, ref:"Pablo" }
     ]
   },
-  hero:{ sub:"Conectá tu cuenta de MetaTrader 5, configurá tu riesgo y dejá que el sistema ejecute automáticamente las señales autorizadas. Sin copiar operaciones a mano." },
-  stats:{ profitFactor:"[PROFIT FACTOR]", winRate:"[WIN RATE]", drawdown:"[MAX DD]", trades:"[TRADES]", period:"[PERIOD]", return:"[RETURN]" },
-  transparency:{ wins:"[DATO]", losses:"[DATO]", dd:"[DATO]", trades:"[DATO]", period:"[PERÍODO]" },
+  hero:{ sub:"Un sistema que recibe señales profesionales y las ejecuta automáticamente en tu MetaTrader 5, con gestión de riesgo gestionada por el robot para proteger tu capital. Sin copiar operaciones a mano, sin decisiones emocionales." },
 
   // Capital mínimo — dato técnico de accesibilidad, NO una promesa de ganancia.
   minCapital:"US$300",
