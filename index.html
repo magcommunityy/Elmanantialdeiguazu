@@ -81,6 +81,18 @@ svg{display:block}
 .nav-toggle span{display:block;width:20px;height:1.5px;background:var(--text);margin:4px 0;transition:.2s}
 .hero{padding:70px 0 96px;position:relative}
 .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:60px;align-items:center}
+.hero-img{position:relative;padding:0;min-height:640px;display:flex;align-items:center;overflow:hidden}
+.hero-img-bg{position:absolute;inset:0;background:url('hero.jpg') center right/cover no-repeat;z-index:0}
+.hero-img-bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--bg) 0%,rgba(5,7,10,.86) 34%,rgba(5,7,10,.4) 60%,rgba(5,7,10,.15) 100%)}
+.hero-inner{position:relative;z-index:1;width:100%}
+.hero-copy{max-width:560px}
+@media(max-width:960px){
+  .hero-img{min-height:auto;padding:80px 0 90px}
+  .hero-img-bg{opacity:.5}
+  .hero-img-bg::after{background:linear-gradient(180deg,rgba(5,7,10,.7),rgba(5,7,10,.92))}
+  .hero-copy{max-width:100%}
+}
 .hero-badge{display:inline-flex;align-items:center;gap:9px;padding:7px 14px;border:1px solid var(--line-2);border-radius:30px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.06em;margin-bottom:26px}
 .hero-badge .live{width:7px;height:7px;border-radius:50%;background:var(--up);box-shadow:0 0 8px var(--up);animation:blink 1.8s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
@@ -446,11 +458,12 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:100px}
   </div>
 </nav>
 
-<header class="hero">
-  <div class="wrap hero-grid">
-    <div class="reveal in">
+<header class="hero hero-img">
+  <div class="hero-img-bg" role="img" aria-label="Estación de trading profesional de Origen Trade con pantallas de XAUUSD, BTCUSD y US100, señal entrante por Telegram y panel de señales en tiempo real"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-copy reveal in">
       <div class="hero-badge"><span class="live"></span>AUTOMATIZACIÓN · SEÑALES PROFESIONALES · MT5</div>
-      <h1>Señales profesionales y automatización,<br><span class="grad">en un solo lugar.</span></h1>
+      <h1>Señales profesionales<br>y automatización,<br><span class="grad">en un solo lugar.</span></h1>
       <p class="sub" data-cfg="hero.sub">Un sistema que recibe señales profesionales y las ejecuta automáticamente en tu MetaTrader 5, con gestión de riesgo gestionada por el robot para proteger tu capital. Sin copiar operaciones a mano, sin decisiones emocionales.</p>
       <div class="hero-actions">
         <a href="#planes" class="btn btn-primary">Ver planes<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -460,34 +473,6 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:100px}
         <div class="hm"><div class="k">Latencia de captura</div><div class="v">Tiempo real</div></div>
         <div class="hm"><div class="k">Ejecución</div><div class="v">3 tramos config.</div></div>
         <div class="hm"><div class="k">Reconexión</div><div class="v">Automática</div></div>
-      </div>
-    </div>
-    <div class="dash reveal in" role="img" aria-label="Panel del sistema mostrando una señal ejecutándose en tres tramos">
-      <div class="dash-bar">
-        <span class="dash-dot"></span><span class="dash-dot"></span><span class="dash-dot"></span>
-        <span class="dash-title">origen-bridge · terminal</span>
-        <span class="dash-live"><span class="live"></span>ONLINE</span>
-      </div>
-      <div class="dash-body">
-        <div class="ticket">
-          <div class="ticket-top"><span class="sym">XAUUSD</span><span class="side">BUY</span></div>
-          <div class="ticket-grid">
-            <div class="tk"><div class="l">Entry</div><div class="n">3382.50</div></div>
-            <div class="tk"><div class="l">SL</div><div class="n">3377.50</div></div>
-            <div class="tk"><div class="l">TP</div><div class="n">3392.50</div></div>
-            <div class="tk"><div class="l">Risk</div><div class="n">0.50%</div></div>
-          </div>
-        </div>
-        <div class="pipeline">
-          <div class="pl" id="p1"><span class="ic">1</span>Signal received<span class="tag">SEÑAL</span></div>
-          <div class="pl" id="p2"><span class="ic">2</span>Condiciones validadas<span class="tag">SPREAD · HORARIO</span></div>
-          <div class="pl" id="p3"><span class="ic">3</span>Trade executed<span class="tag">3 TRAMOS</span></div>
-        </div>
-        <div class="ladder">
-          <div class="lad"><span class="lab">TP1</span><div class="lad-track"><i class="lad-fill" id="f1"></i></div></div>
-          <div class="lad"><span class="lab">TP2 · SL→entry</span><div class="lad-track"><i class="lad-fill" id="f2"></i></div></div>
-          <div class="lad"><span class="lab">TP3 · SL→TP1</span><div class="lad-track"><i class="lad-fill" id="f3"></i></div></div>
-        </div>
       </div>
     </div>
   </div>
@@ -1211,18 +1196,6 @@ navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navLin
 
 const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
 document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
-
-const pls=[document.getElementById('p1'),document.getElementById('p2'),document.getElementById('p3')];
-const fills=[document.getElementById('f1'),document.getElementById('f2'),document.getElementById('f3')];
-const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-function runDemo(){
-  pls.forEach(p=>p.classList.remove('on'));
-  fills.forEach(f=>f.style.width='0');
-  pls.forEach((p,i)=>setTimeout(()=>p.classList.add('on'),650*(i+1)));
-  fills.forEach((f,i)=>setTimeout(()=>f.style.width=(34-i)+'%',2400+i*450));
-}
-if(!reduce){ runDemo(); setInterval(runDemo,7000); }
-else { pls.forEach(p=>p.classList.add('on')); fills.forEach((f,i)=>f.style.width=(34-i)+'%'); }
 
 /* ---------- MODAL CHECKOUT ---------- */
 (function(){
