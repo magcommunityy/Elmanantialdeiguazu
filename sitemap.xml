@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://TU-DOMINIO.com.ar/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://TU-DOMINIO.com.ar/</loc>
+    <lastmod>2026-11-18</lastmod>
+    <image:image><image:loc>https://TU-DOMINIO.com.ar/img/pileta-aerea-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://TU-DOMINIO.com.ar/img/pileta-azul-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://TU-DOMINIO.com.ar/img/familiar-fachada-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://TU-DOMINIO.com.ar/img/monoambiente-fachada-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://TU-DOMINIO.com.ar/img/deluxe-fachada-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://TU-DOMINIO.com.ar/img/quincho-interior-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://TU-DOMINIO.com.ar/img/familiar-cocina-1600.webp</image:loc></image:image>
+  </url>
 </urlset>
