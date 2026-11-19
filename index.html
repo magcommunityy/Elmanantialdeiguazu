@@ -1,1368 +1,619 @@
 <!DOCTYPE html>
-<html lang="es">
+<!-- Cabañas El Manantial de Iguazú — v3.4 -->
+<html lang="es-AR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Origen Trade Bridge — Ejecución automática de señales en MetaTrader 5</title>
-<meta name="description" content="Señales profesionales y automatización en un solo lugar: el sistema recibe las señales y las ejecuta en tu MetaTrader 5 con gestión de riesgo que protege tu capital (break-even, trailing, cierre por tramos).">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="Origen Trade Bridge — Señales profesionales + automatización en MT5">
-<meta property="og:description" content="Señales profesionales y automatización en un solo lugar, con gestión de riesgo gestionada por el robot para proteger tu capital.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cabañas con pileta en Puerto Iguazú | El Manantial de Iguazú</title>
+<meta name="description" content="Cabañas monoambiente, familiares y deluxe con pileta, parque y quincho en Puerto Iguazú, Misiones. Reservá directo con descuento y seña. Montecarlo 38.">
+<link rel="canonical" href="https://TU-DOMINIO.com.ar/">
+<meta name="theme-color" content="#1f3a2c">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="es_AR">
+<meta property="og:title" content="Cabañas El Manantial de Iguazú · Reserva directa">
+<meta property="og:description" content="Cabañas con pileta, parque y quincho en Puerto Iguazú. Reservá directo con descuento.">
+<meta property="og:url" content="https://TU-DOMINIO.com.ar/">
+<meta property="og:image" content="https://TU-DOMINIO.com.ar/img/pileta-aerea-1600.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f3a2c'/%3E%3Cpath d='M10 38 32 17l22 21v4H10z' fill='%23e3cc94'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<script>document.documentElement.classList.add('js')</script>
 <style>
-/* ============================================================
-   ORIGEN TRADE BRIDGE — landing single-file, sin dependencias.
-   Todo el contenido editable vive en CONFIG (final del archivo).
-   Look: cyan eléctrico / tech-trading sobre negro.
-   ============================================================ */
-:root{
-  --bg:#05070A;--bg-2:#0A0E14;--bg-3:#0E141C;
-  --grid:rgba(56,189,248,.05);--line:rgba(56,189,248,.12);--line-2:rgba(56,189,248,.28);
-  --cyan:#38E5FF;--cyan-deep:#0FA8C7;--blue:#2D7DFF;
-  --text:#E8F1F5;--muted:#8A9BA8;--muted-2:#54636E;
-  --up:#3FE0A0;--down:#FF6B6B;--amber:#FFB84D;
-  --radius:16px;--maxw:1200px;
+:root{--bg:#eceae2;--g:#1f3a2c;--g2:#dde7d8;--ink:#17231c;--mut:#566259;--r:28px}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body,h1,h2,h3,p,ul,dl,dd,figure{margin:0}
+ul{padding:0;list-style:none}
+html{scroll-behavior:smooth;scroll-padding-top:6rem;-webkit-text-size-adjust:100%}
+body{font:400 1rem/1.6 Manrope,system-ui,sans-serif;color:var(--ink);background:var(--bg);padding:12px;overflow-x:clip}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--g);outline-offset:3px}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+h1,h2,h3{font-weight:500;letter-spacing:-.03em;line-height:1.05;color:inherit}
+h2{font-size:clamp(2rem,4vw,3.2rem)}
+h3{font-size:1.35rem;letter-spacing:-.02em;line-height:1.15}
+.tag{display:block;font:700 .72rem/1 Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:.9rem}
+.w{width:min(1240px,100%);margin-inline:auto}
+.sec{margin-top:clamp(3rem,7vw,6rem)}
+.hd{display:grid;grid-template-columns:1fr 1fr;gap:1rem 3rem;align-items:end;margin-bottom:1.6rem;padding-inline:clamp(.3rem,1.5vw,1.2rem)}
+.hd p{color:var(--mut);max-width:34rem}
+.skip{position:absolute;left:1rem;top:-5rem;z-index:100;background:#fff;padding:.7rem 1rem;border-radius:10px}
+.skip:focus{top:1rem}
+.btn{display:inline-flex;align-items:center;justify-content:space-between;gap:.9rem;min-height:48px;padding:6px 6px 6px 22px;border-radius:999px;background:var(--g);color:#fff;border:0;font:600 .92rem Manrope,sans-serif;text-decoration:none;cursor:pointer;transition:filter .2s}
+.btn:hover{filter:brightness(1.25)}
+.btn .ar{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.16)}
+.btn.lt{background:#fff;color:var(--g)}.btn.lt .ar{background:var(--g);color:#fff}
+.btn.gl{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.55);padding-right:22px;backdrop-filter:blur(6px)}
+.btn.ol{background:transparent;color:var(--g);border:1px solid #bcc6b9;padding-right:22px}
+.top{position:fixed;top:24px;left:24px;right:24px;z-index:50}
+.top .in{display:flex;align-items:center;gap:1rem;max-width:1216px;margin-inline:auto;background:rgba(255,255,255,.93);backdrop-filter:blur(10px);border-radius:999px;padding:8px 8px 8px 12px;box-shadow:0 8px 30px -14px rgba(0,0,0,.4)}
+.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-right:auto}
+.brand b{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--g);color:#e3cc94;font-size:.8rem;letter-spacing:.02em}
+.brand small{display:block;font-weight:500;font-size:.72rem;color:var(--mut);letter-spacing:.04em}
+.top nav{display:flex;gap:.2rem}
+.top nav a{text-decoration:none;font-size:.88rem;font-weight:600;padding:.55rem 1rem;border-radius:999px}
+.top nav a:hover{background:#eef0ea}
+.top .btn{min-height:44px;padding-left:20px}.top .btn .ar{width:32px;height:32px}
+.hero{position:relative;border-radius:32px;overflow:hidden;min-height:max(660px,calc(100svh - 24px));display:flex;flex-direction:column;justify-content:flex-end;color:#fff;isolation:isolate;padding:clamp(.8rem,2vw,1.6rem)}
+.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(8,20,13,.72),rgba(8,20,13,.1) 65%),linear-gradient(180deg,rgba(8,20,13,.35),transparent 30%,rgba(8,20,13,.55))}
+.hero-in{display:grid;grid-template-columns:1fr auto;align-items:end;gap:2rem;margin:7rem clamp(.4rem,1.5vw,1.2rem) 1.4rem}
+.hero h1{font-size:clamp(2.5rem,5.8vw,4.8rem);max-width:13ch}
+.hero .lead{max-width:34rem;margin:1.1rem 0 1.7rem;font-size:1.1rem;color:rgba(255,255,255,.92)}
+.acts{display:flex;flex-wrap:wrap;gap:.7rem}
+.fl{width:290px;text-decoration:none;background:rgba(255,255,255,.16);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.4);border-radius:24px;padding:10px}
+.fl img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:16px}
+.fl p{padding:.7rem .5rem .3rem;font-size:.92rem;font-weight:600}
+.fl span{display:block;font-weight:400;opacity:.85;font-size:.84rem}
+.reserva{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:8px;background:#fff;color:var(--ink);border-radius:28px;padding:8px}
+.reserva label{display:grid;gap:2px;padding:.6rem 1.1rem;border-radius:20px;background:#f3f2ec;font:700 .68rem/1.2 Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.reserva>*{min-width:0}
+.reserva input[type=date]{min-width:0;max-width:100%}
+.reserva label:focus-within{outline:2px solid var(--g)}
+.reserva input,.reserva select{border:0;background:transparent;font:600 1rem Manrope,sans-serif;color:var(--ink);min-height:30px;padding:0;width:100%;outline:none}
+.reserva input:user-invalid,.reserva select:user-invalid{color:#b3261e}
+.reserva .btn{padding-left:28px;min-width:190px}
+.reserva p{grid-column:1/-1;padding:0 .9rem;font-size:.9rem}
+.reserva p:empty{display:none}
+.reserva .sug{font-weight:600}
+.pie .reserva{grid-template-columns:1fr 1fr}.pie .reserva .btn[type=submit]{grid-column:1/-1}
+@media(max-width:1000px){.reserva{grid-template-columns:1fr 1fr}.reserva .btn[type=submit]{grid-column:1/-1}}
+.reserva .wa{grid-column:1/-1;justify-self:start;margin:0 0 .4rem .6rem}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.feat article{background:#fff;border-radius:var(--r);padding:1.6rem;min-height:260px;display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem}
+.feat article.dk{background:var(--g);color:#fff}
+.feat p{color:var(--mut);font-size:.95rem;margin-top:.6rem}.dk p{color:rgba(255,255,255,.82)!important}
+.ic{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--g2);color:var(--g)}
+.dk .ic{background:rgba(255,255,255,.16);color:#fff}
+.cab{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.cc{background:#fff;border-radius:var(--r);padding:10px 10px 14px;display:grid;gap:.8rem;align-content:start}
+.cc img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:20px}
+.cc h3{padding:0 .6rem}
+.cc p{padding:0 .6rem;color:var(--mut);font-size:.93rem}
+.cc .m{display:flex;gap:.5rem;align-items:center;color:var(--mut);font-size:.9rem;font-weight:600;padding:0 .6rem}
+.cc .btn{justify-self:start;margin:.3rem 0 0 .6rem}
+.cc.dk{background:var(--g);color:#fff;padding:1.7rem;align-content:space-between;min-height:340px}
+.cc.dk p{padding:0;color:rgba(255,255,255,.82)}.cc.dk h3{padding:0;font-size:1.9rem}
+.cc.dk .btn{margin:0}
+.bento{display:grid;grid-template-columns:1.15fr 1fr 1fr;grid-template-rows:repeat(2,clamp(220px,24vw,330px));gap:12px}
+.bt{position:relative;border-radius:var(--r);overflow:hidden;color:#fff;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;gap:.5rem;padding:1.3rem}
+.bt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.bt::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 40%,rgba(8,20,13,.78))}
+.bt.big{grid-row:span 2;padding:1.8rem}
+.bt.big h3{font-size:clamp(1.8rem,3vw,2.7rem)}
+.bt p{max-width:26rem;font-size:.95rem;color:rgba(255,255,255,.9)}
+.mot{display:grid;grid-template-columns:1.7fr 1fr;gap:12px}
+.m1{background:var(--g);color:#fff;border-radius:var(--r);display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.m1 .tx{padding:clamp(1.4rem,3vw,2.2rem);display:grid;gap:1.4rem;align-content:space-between}
+.m1 img{width:100%;height:100%;min-height:340px;object-fit:cover}
+.m1 ul{display:grid;gap:.9rem}
+.m1 li{display:flex;gap:.8rem;align-items:flex-start;color:rgba(255,255,255,.9)}
+.m1 li .i{margin-top:.2rem;color:#e3cc94}
+.m1 li b{color:#fff;display:block}
+.m2{background:var(--g2);border-radius:var(--r);padding:clamp(1.4rem,3vw,2.2rem);display:grid;gap:1.2rem;align-content:space-between}
+.m2 p{color:#3d4a41}
+.loc{background:#fff;border-radius:var(--r);padding:12px;display:grid;grid-template-columns:1fr 1.1fr;gap:12px}
+.loc .l{padding:clamp(1rem,3vw,2.2rem);display:grid;gap:1.4rem;align-content:start}
+.loc .photo{border-radius:20px;overflow:hidden}
+.loc .photo img{width:100%;height:100%;min-height:360px;object-fit:cover}
+.rows{display:grid;gap:8px}
+.rows li{display:flex;gap:1rem;align-items:center;padding:.85rem 1.1rem;border:1px solid #e3e1d8;border-radius:18px}
+.rows .i{color:var(--g)}
+.rows small{display:block;color:var(--mut);font-size:.78rem;font-weight:600}
+.rows b{font-weight:600}
+.faq{display:grid;grid-template-columns:1fr 1.5fr;gap:2rem 4rem;padding-inline:clamp(.3rem,1.5vw,1.2rem)}
+details{border-bottom:1px solid #cfd3c8;padding:1.1rem 0}
+details:first-child{border-top:1px solid #cfd3c8}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:1rem;font-weight:600;font-size:1.08rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--g)}
+details[open] summary::after{content:"–"}
+details p{margin-top:.7rem;color:var(--mut);max-width:40rem}
+.pie{background:var(--g);color:#fff;border-radius:32px;padding:clamp(1.4rem,4vw,3rem);display:grid;gap:2.5rem;margin-top:clamp(3rem,7vw,6rem)}
+.pie .t2{display:grid;grid-template-columns:1fr 1.35fr;gap:2rem 3rem;align-items:center}
+.pie .t2 p{color:rgba(255,255,255,.82);margin-top:1rem;max-width:26rem}
+.pie .bot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem 3rem;border-top:1px solid rgba(255,255,255,.2);padding-top:1.5rem;font-size:.92rem;color:rgba(255,255,255,.8)}
+.pie .bot strong{color:#fff;font-size:1.05rem}
+.fab{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;align-items:center;gap:.6rem;min-height:56px;padding:0 20px 0 16px;border-radius:999px;background:#167a43;color:#fff;font:700 .95rem Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -8px rgba(0,0,0,.5);transition:transform .2s}
+.fab:hover{transform:translateY(-2px)}.fab .i{width:26px;height:26px}
+@media(max-width:640px){.fab{right:14px;bottom:14px;width:58px;height:58px;padding:0;justify-content:center}.fab span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+.cc .pr{color:var(--ink);font-size:.95rem}
+.inc{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+.inc>div{border-radius:var(--r);padding:clamp(1.4rem,3vw,2.2rem);display:grid;gap:1.2rem;align-content:start}
+.inc .a{background:var(--g);color:#fff}.inc .b{background:#fff}
+.inc ul{display:grid;grid-template-columns:1fr 1fr;gap:.7rem 1.5rem}.inc .b ul{grid-template-columns:1fr}
+.inc li{display:flex;gap:.6rem;align-items:flex-start}.inc li .i{margin-top:.2rem}.inc .a li .i{color:#e3cc94}.inc .b li .i{color:var(--g)}
+.mut2{color:var(--mut);font-size:.92rem}
+@media(max-width:1000px){.inc{grid-template-columns:1fr}}@media(max-width:640px){.inc ul{grid-template-columns:1fr}}
+.tar{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tar>div{background:#fff;border-radius:var(--r);padding:1.6rem;display:grid;gap:.6rem;align-content:start}
+.tar dl>div{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0;border-bottom:1px solid #e3e1d8}
+.tar dl>div:last-child{border-bottom:0}.tar dd{font-weight:700;font-size:1.1rem}
+.obs{background:var(--g2);border-radius:var(--r);padding:1.4rem 1.8rem;margin-top:12px;display:grid;gap:.7rem}
+.obs li{display:flex;gap:.6rem}.obs li .i{margin-top:.25rem;color:var(--g)}
+.int{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.int figure{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:4/5;isolation:isolate}
+.int img{width:100%;height:100%;object-fit:cover}
+.int figcaption{position:absolute;inset:auto 0 0 0;padding:2.5rem 1.2rem 1.1rem;color:#fff;font-weight:600;background:linear-gradient(transparent,rgba(8,20,13,.78))}
+.inc .b li{display:block}.inc .c{grid-column:1/-1;background:var(--g2)}.inc .c ul{grid-template-columns:repeat(3,1fr)}.inc .c li .i{color:var(--g)}
+@media(max-width:1000px){.tar,.int{grid-template-columns:1fr}.inc .c ul{grid-template-columns:1fr}.int figure{aspect-ratio:4/3}}
+.js .rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+.js .rv.on{opacity:1;transform:none}
+@media(max-width:1000px){
+ .top nav{display:none}
+ .hd,.faq,.mot,.loc,.pie .t2{grid-template-columns:1fr}
+ .feat,.cab{grid-template-columns:1fr 1fr}
+ .hero-in{grid-template-columns:1fr}.fl{display:none}
+ .bento{grid-template-columns:1fr 1fr;grid-template-rows:none;grid-auto-rows:240px}.bt.big{grid-column:1/-1;grid-row:auto;min-height:340px}
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative}
-body::before{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(var(--grid) 1px,transparent 1px) 0 0/54px 54px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/54px 54px;mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 40%,transparent 100%)}
-body::after{content:"";position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:900px;height:600px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse,rgba(45,125,255,.14),transparent 60%);filter:blur(20px)}
-h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:600;line-height:1.1;letter-spacing:-.02em}
-.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
-a{color:inherit;text-decoration:none}
-svg{display:block}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);font-weight:500}
-.eyebrow::before{content:"";width:24px;height:1px;background:var(--cyan);opacity:.6}
-.diff{padding:90px 0;border-bottom:1px solid var(--line)}
-.diff-head{text-align:center;max-width:660px;margin:0 auto 48px}
-.diff-head h2{font-size:clamp(1.9rem,4.2vw,2.9rem);margin-bottom:14px}
-.diff-head p{color:var(--muted);font-size:1.04rem}
-.diff-cols{display:grid;grid-template-columns:1fr auto 1fr;gap:28px;align-items:stretch;max-width:920px;margin:0 auto}
-.diff-col{background:var(--bg-3);border:1px solid var(--line);border-radius:16px;padding:32px}
-.diff-col .dc-ico{width:48px;height:48px;border-radius:12px;background:rgba(56,189,248,.08);border:1px solid var(--line-2);
-  display:flex;align-items:center;justify-content:center;margin-bottom:18px}
-.diff-col .dc-ico svg{width:24px;height:24px;stroke:var(--cyan);fill:none;stroke-width:1.5}
-.diff-col h3{font-size:1.4rem;margin-bottom:10px}
-.diff-col p{color:var(--muted);font-size:.95rem}
-.diff-plus{display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-size:2rem;color:var(--cyan);font-weight:600}
-.diff-result{max-width:920px;margin:24px auto 0;text-align:center;padding:26px;border:1px solid var(--line-2);border-radius:16px;
-  background:linear-gradient(135deg,rgba(56,189,248,.08),transparent)}
-.diff-result b{color:var(--cyan)}
-.diff-result .dr-title{font-family:'Space Grotesk';font-size:1.3rem;color:var(--text);font-weight:600;margin-bottom:6px}
-.diff-result p{color:var(--muted);font-size:.95rem}
-@media(max-width:720px){.diff-cols{grid-template-columns:1fr}.diff-plus{transform:rotate(90deg);padding:4px 0}}
-.section{padding:120px 0;position:relative}
-.section-head{max-width:660px;margin-bottom:60px}
-.section-head.center{margin-left:auto;margin-right:auto;text-align:center}
-.section-head h2{font-size:clamp(2rem,4.6vw,3.2rem);margin:18px 0 16px}
-.section-head p{color:var(--muted);font-size:1.06rem}
-.grad{background:linear-gradient(120deg,var(--cyan),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:.95rem;padding:15px 30px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.22s ease;letter-spacing:.01em;position:relative;overflow:hidden}
-.btn-primary{background:linear-gradient(120deg,var(--cyan),var(--blue));color:#04121A;font-weight:600;box-shadow:0 0 0 1px rgba(56,229,255,.4),0 8px 30px -8px rgba(56,229,255,.5)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(56,229,255,.6),0 12px 40px -8px rgba(56,229,255,.7)}
-.btn-ghost{background:rgba(56,189,248,.04);border-color:var(--line-2);color:var(--text)}
-.btn-ghost:hover{border-color:var(--cyan);background:rgba(56,189,248,.1)}
-.btn svg{width:17px;height:17px}
-:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
-.nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(16px);background:rgba(5,7,10,.72);border-bottom:1px solid var(--line)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px}
-.brand{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:600;letter-spacing:-.01em}
-.brand .mark{width:32px;height:32px;flex:0 0 32px}
-.nav-links{display:flex;gap:32px;align-items:center}
-.nav-links a{font-size:.9rem;color:var(--muted);transition:.2s;position:relative}
-.nav-links a:hover{color:var(--text)}
-.nav-cta{display:flex;gap:12px;align-items:center}
-.nav-toggle{display:none;background:none;border:1px solid var(--line-2);border-radius:8px;padding:9px 11px;cursor:pointer}
-.nav-toggle span{display:block;width:20px;height:1.5px;background:var(--text);margin:4px 0;transition:.2s}
-.hero{padding:70px 0 96px;position:relative}
-.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:60px;align-items:center}
-.hero-img{position:relative;padding:0;min-height:640px;display:flex;align-items:center;overflow:hidden}
-.hero-img-bg{position:absolute;inset:0;background:url('hero.jpg') center right/cover no-repeat;z-index:0}
-.hero-img-bg::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(90deg,var(--bg) 0%,rgba(5,7,10,.86) 34%,rgba(5,7,10,.4) 60%,rgba(5,7,10,.15) 100%)}
-.hero-inner{position:relative;z-index:1;width:100%}
-.hero-copy{max-width:560px}
-@media(max-width:960px){
-  .hero-img{min-height:auto;padding:80px 0 90px}
-  .hero-img-bg{opacity:.5}
-  .hero-img-bg::after{background:linear-gradient(180deg,rgba(5,7,10,.7),rgba(5,7,10,.92))}
-  .hero-copy{max-width:100%}
+@media(max-width:640px){
+ body{padding:8px}.top{top:16px;left:16px;right:16px}
+ .hero{border-radius:26px}
+ .feat,.cab,.m1,.bento{grid-template-columns:1fr}
+ .m1 img{min-height:240px;order:-1}
+ .bt.big{grid-column:auto}
+ .feat article{min-height:200px}
 }
-.hero-badge{display:inline-flex;align-items:center;gap:9px;padding:7px 14px;border:1px solid var(--line-2);border-radius:30px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.06em;margin-bottom:26px}
-.hero-badge .live{width:7px;height:7px;border-radius:50%;background:var(--up);box-shadow:0 0 8px var(--up);animation:blink 1.8s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
-.hero h1{font-size:clamp(2.7rem,6.2vw,4.6rem);margin-bottom:24px;letter-spacing:-.03em}
-.hero .sub{font-size:1.16rem;color:var(--muted);max-width:530px;margin-bottom:36px}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:38px}
-.hero-metrics{display:flex;gap:34px;flex-wrap:wrap}
-.hm .k{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
-.hm .v{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;color:var(--text);margin-top:3px}
-.dash{background:linear-gradient(165deg,#0B1119,#070A0F);border:1px solid var(--line-2);border-radius:20px;overflow:hidden;box-shadow:0 40px 100px -30px rgba(0,0,0,.9),0 0 0 1px rgba(56,189,248,.06);position:relative}
-.dash::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.6}
-.dash-bar{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(0,0,0,.3)}
-.dash-dot{width:9px;height:9px;border-radius:50%;background:#1a2530}
-.dash-title{margin-left:8px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted-2);letter-spacing:.04em}
-.dash-live{margin-left:auto;display:flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--up);letter-spacing:.08em}
-.dash-live .live{width:6px;height:6px;border-radius:50%;background:var(--up);box-shadow:0 0 8px var(--up);animation:blink 1.8s infinite}
-.dash-body{padding:20px}
-.ticket{background:rgba(56,189,248,.03);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
-.ticket-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.sym{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.2rem;letter-spacing:.02em}
-.side{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;letter-spacing:.1em;padding:4px 11px;border-radius:6px;background:rgba(63,224,160,.14);color:var(--up);border:1px solid rgba(63,224,160,.3)}
-.ticket-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.tk{text-align:left}
-.tk .l{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2)}
-.tk .n{font-family:'JetBrains Mono',monospace;font-size:.92rem;color:var(--text);margin-top:3px;font-weight:500}
-.pipeline{display:grid;gap:8px;margin-bottom:14px}
-.pl{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;background:rgba(255,255,255,.015);border:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--muted);transition:.4s;opacity:.4}
-.pl.on{opacity:1;background:rgba(56,189,248,.06);border-color:var(--line-2);color:var(--text)}
-.pl .ic{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:rgba(56,189,248,.12);color:var(--cyan);font-size:.7rem;flex:0 0 22px}
-.pl.on .ic{background:var(--cyan);color:#04121A}
-.pl .tag{margin-left:auto;font-size:.64rem;letter-spacing:.06em;color:var(--cyan)}
-.ladder{border-top:1px solid var(--line);padding-top:14px}
-.lad{display:flex;align-items:center;gap:12px;padding:6px 0;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted)}
-.lad .lab{width:120px;flex:0 0 120px}
-.lad-track{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.05);overflow:hidden}
-.lad-fill{height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--cyan-deep),var(--cyan));box-shadow:0 0 10px rgba(56,229,255,.5);transition:width 1s ease}
-.strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;background:rgba(10,14,20,.5)}
-.strip-in{display:flex;flex-wrap:wrap;gap:16px 44px;justify-content:center;align-items:center}
-.strip-item{display:flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.strip-item svg{width:16px;height:16px;stroke:var(--cyan);fill:none;stroke-width:1.5}
-.grid{display:grid;gap:20px}
-.g-3{grid-template-columns:repeat(3,1fr)}.g-2{grid-template-columns:repeat(2,1fr)}
-.card{background:var(--bg-3);border:1px solid var(--line);border-radius:var(--radius);padding:30px;transition:.3s;position:relative;overflow:hidden}
-.card:hover{border-color:var(--line-2);transform:translateY(-4px)}
-.card:hover::after{opacity:1}
-.card::after{content:"";position:absolute;inset:0;border-radius:var(--radius);pointer-events:none;opacity:0;transition:.3s;background:radial-gradient(400px circle at 50% 0%,rgba(56,189,248,.06),transparent 70%)}
-.card .idx{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--cyan-deep);letter-spacing:.1em}
-.card h3{font-size:1.4rem;margin:14px 0 10px}
-.card p{color:var(--muted);font-size:.96rem}
-.icon-box{width:46px;height:46px;border-radius:12px;background:rgba(56,189,248,.08);border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
-.icon-box svg{width:22px;height:22px;stroke:var(--cyan);fill:none;stroke-width:1.5}
-.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:0 0 52px}
-.flow-node{padding:12px 20px;border:1px solid var(--line-2);border-radius:10px;background:var(--bg-2);font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.08em;color:var(--text)}
-.flow-node.accent{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 20px -6px rgba(56,229,255,.5)}
-.flow-arrow{color:var(--cyan-deep)}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
-.step{padding:0 26px;border-left:1px solid var(--line);position:relative}
-.step:first-child{border-left:none;padding-left:0}
-.step .num{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--cyan);letter-spacing:.1em;margin-bottom:20px;display:inline-block;padding:5px 10px;border:1px solid var(--line-2);border-radius:6px}
-.step h3{font-size:1.3rem;margin-bottom:8px}
-.step p{color:var(--muted);font-size:.94rem}
-.shield-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.shield-rules{display:grid;gap:12px}
-.rule{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--bg-3);border:1px solid var(--line);border-radius:12px;transition:.25s}
-.rule:hover{border-color:var(--line-2)}
-.rule .cond{flex:1;color:var(--text);font-size:.94rem}
-.rule .act{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--amber);letter-spacing:.04em;text-align:right;white-space:nowrap}
-.protect-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px}
-.protect-card{background:linear-gradient(165deg,rgba(56,189,248,.05),var(--bg-3));border:1px solid var(--line-2);border-radius:16px;padding:28px;position:relative;overflow:hidden}
-.protect-card .pc-step{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;color:var(--cyan);margin-bottom:14px;text-transform:uppercase}
-.protect-card h3{font-size:1.35rem;margin-bottom:10px}
-.protect-card p{color:var(--muted);font-size:.92rem}
-.protect-card .pc-viz{display:flex;align-items:center;gap:6px;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted-2)}
-.protect-card .pc-viz .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px rgba(56,229,255,.5)}
-.protect-card .pc-viz .arw{color:var(--cyan-deep)}
-@media(max-width:840px){.protect-cards{grid-template-columns:1fr}}
-.controls-list{display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start}
-.chip{padding:9px 16px;border:1px solid var(--line);border-radius:30px;font-size:.85rem;color:var(--muted);background:var(--bg-2);transition:.2s}
-.chip:hover{border-color:var(--line-2);color:var(--text)}
-.pain-wrap{max-width:920px;margin:0 auto}
-.pain-lead{font-family:'Space Grotesk';font-size:clamp(1.5rem,3.4vw,2.2rem);font-weight:600;line-height:1.3;text-align:center;margin-bottom:44px;color:var(--text)}
-.pain-lead b{color:var(--cyan)}
-.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:40px}
-.pain-item{background:var(--bg-3);border:1px solid var(--line);border-radius:16px;padding:28px;transition:.3s}
-.pain-item:hover{border-color:var(--line-2);transform:translateY(-3px)}
-.pain-item .pi-ico{width:44px;height:44px;border-radius:11px;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);
-  display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.pain-item .pi-ico svg{width:22px;height:22px;stroke:var(--down);fill:none;stroke-width:1.5}
-.pain-item h3{font-size:1.2rem;margin-bottom:8px}
-.pain-item p{color:var(--muted);font-size:.92rem}
-.pain-turn{text-align:center;padding:36px;border:1px solid var(--line-2);border-radius:18px;
-  background:linear-gradient(135deg,rgba(56,189,248,.08),transparent)}
-.pain-turn .pt-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
-.pain-turn h3{font-size:clamp(1.5rem,3.2vw,2rem);margin-bottom:12px}
-.pain-turn p{color:var(--muted);font-size:1rem;max-width:560px;margin:0 auto 24px}
-@media(max-width:840px){.pain-grid{grid-template-columns:1fr}}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px}
-.stat{background:var(--bg-3);border:1px solid var(--line);border-radius:var(--radius);padding:28px;text-align:center;position:relative}
-.stat .val{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;color:var(--cyan);line-height:1;font-weight:600}
-.stat .lbl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin-top:10px}
-.equity{background:var(--bg-3);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
-.equity-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.equity-head span{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted-2);letter-spacing:.1em}
-.toggle{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:44px}
-.toggle button{background:none;border:none;cursor:pointer;color:var(--muted);font-family:'Space Grotesk';font-size:.94rem;padding:8px 4px;transition:.2s}
-.toggle button.on{color:var(--text)}
-.switch{width:54px;height:30px;border-radius:20px;background:var(--bg-3);border:1px solid var(--line-2);position:relative;cursor:pointer;transition:.2s}
-.switch.annual{background:rgba(56,189,248,.12);border-color:var(--cyan)}
-.switch .knob{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:var(--cyan);transition:.25s;box-shadow:0 0 12px rgba(56,229,255,.6)}
-.switch.annual .knob{left:26px}
-.save-badge{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--up);letter-spacing:.06em;padding:3px 8px;border:1px solid rgba(63,224,160,.3);border-radius:20px;background:rgba(63,224,160,.08)}
-.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
-.plan{background:var(--bg-3);border:1px solid var(--line);border-radius:18px;padding:34px 28px;display:flex;flex-direction:column;position:relative;transition:.3s}
-.plan:hover{border-color:var(--line-2);transform:translateY(-4px)}
-.plan.featured{border-color:var(--cyan);background:linear-gradient(180deg,rgba(56,189,248,.07),var(--bg-3));box-shadow:0 0 0 1px rgba(56,229,255,.2),0 30px 70px -30px rgba(56,229,255,.35)}
-.plan .badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(120deg,var(--cyan),var(--blue));color:#04121A;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.12em;padding:6px 16px;border-radius:20px;white-space:nowrap}
-.plan .pname{font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
-.plan .price{font-family:'Space Grotesk',sans-serif;font-size:3rem;color:var(--text);line-height:1;font-weight:600;display:flex;align-items:baseline;gap:4px}
-.plan .price small{font-size:.9rem;color:var(--muted-2);font-weight:400;font-family:'Inter'}
-.plan .price-note{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted-2);margin-top:8px;min-height:1em}
-.plan .price s{font-size:1.3rem;color:var(--muted-2);font-weight:400;font-family:'Inter';text-decoration-color:var(--down);margin-right:2px}
-.plan .ptag{font-size:.86rem;color:var(--muted);margin:-8px 0 16px}
-.license-card{margin-top:24px;background:var(--bg-3);border:1px dashed var(--line-2);border-radius:18px;padding:30px 34px;
-  display:flex;flex-wrap:wrap;align-items:center;gap:24px;justify-content:space-between}
-.license-card .lc-left{flex:1;min-width:260px}
-.license-card .lc-tag{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
-.license-card h3{font-size:1.5rem;margin-bottom:6px}
-.license-card .lc-desc{color:var(--muted);font-size:.92rem}
-.license-card .lc-feats{list-style:none;display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px}
-.license-card .lc-feats li{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:.84rem}
-.license-card .lc-feats svg{width:14px;height:14px;stroke:var(--cyan);fill:none;stroke-width:2;flex:0 0 14px}
-.license-card .lc-right{text-align:center}
-.license-card .lc-price{font-family:'Space Grotesk';font-size:2.6rem;font-weight:600;color:var(--text);line-height:1}
-.license-card .lc-once{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--muted-2);letter-spacing:.08em;margin:6px 0 16px}
-/* ---------- MODAL CHECKOUT ---------- */
-.modal-ov{position:fixed;inset:0;z-index:100;background:rgba(3,5,8,.82);backdrop-filter:blur(6px);
-  display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:.25s}
-.modal-ov.open{opacity:1;pointer-events:auto}
-.modal{background:linear-gradient(165deg,#0C131C,#080B10);border:1px solid var(--line-2);border-radius:20px;
-  max-width:520px;width:100%;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(16px) scale(.98);transition:.25s;
-  box-shadow:0 40px 120px -30px rgba(0,0,0,.9)}
-.modal-ov.open .modal{transform:none}
-.modal-x{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:8px;border:1px solid var(--line);
-  background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;font-size:1.1rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:.2s}
-.modal-x:hover{border-color:var(--line-2);color:var(--text)}
-.modal-hd{padding:32px 32px 22px;border-bottom:1px solid var(--line)}
-.modal-hd .eyebrow{margin-bottom:12px}
-.modal-plan{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.modal-plan h3{font-size:1.7rem}
-.modal-plan .mp-price{font-family:'Space Grotesk';font-weight:600;font-size:1.7rem;color:var(--cyan)}
-.modal-plan .mp-price small{font-size:.82rem;color:var(--muted-2);font-weight:400;font-family:'Inter'}
-.modal-sub{color:var(--muted);font-size:.9rem;margin-top:6px}
-.modal-bd{padding:26px 32px}
-.promo-box{margin-bottom:20px}
-.promo-label{display:block;font-family:'Space Grotesk';font-size:.9rem;font-weight:500;color:var(--text);margin-bottom:10px}
-.promo-label span{color:var(--muted-2);font-weight:400;font-size:.82rem}
-.promo-fields{display:none;gap:8px}
-.promo-fields.show{display:flex}
-.promo-fields input{flex:1;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:8px;color:var(--text);
-  font-family:'JetBrains Mono',monospace;font-size:.9rem;padding:12px 14px;text-transform:uppercase;letter-spacing:.05em}
-.promo-fields input:focus{outline:none;border-color:var(--cyan)}
-.promo-fields input::placeholder{color:var(--muted-2);text-transform:none;letter-spacing:0}
-.promo-apply{background:rgba(56,189,248,.1);border:1px solid var(--line-2);color:var(--cyan);border-radius:8px;
-  padding:0 18px;font-family:'Space Grotesk';font-size:.86rem;font-weight:500;cursor:pointer;transition:.2s;white-space:nowrap}
-.promo-apply:hover{background:rgba(56,189,248,.18)}
-.promo-msg{font-size:.8rem;margin-top:8px;min-height:1em}
-.promo-msg.ok{color:var(--up)}
-.promo-msg.err{color:var(--down)}
-.mp-price s{font-size:1rem;color:var(--muted-2);font-weight:400;font-family:'Inter';text-decoration-color:var(--down);margin-right:6px}
-.broker-offer{position:relative;background:linear-gradient(135deg,rgba(56,189,248,.12),rgba(45,125,255,.06),var(--bg-3));
-  border:1px solid var(--cyan);border-radius:20px;padding:38px;margin-bottom:40px;overflow:hidden;
-  box-shadow:0 0 0 1px rgba(56,229,255,.25),0 30px 80px -30px rgba(56,229,255,.4)}
-.broker-offer::before{content:"";position:absolute;top:-40%;right:-10%;width:420px;height:420px;
-  background:radial-gradient(circle,rgba(56,189,248,.16),transparent 60%);filter:blur(24px);pointer-events:none}
-.broker-badge{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(120deg,var(--cyan),var(--blue));
-  color:#04121A;font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;letter-spacing:.1em;
-  padding:6px 14px;border-radius:20px;margin-bottom:18px}
-.bo-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:36px;align-items:center;position:relative}
-.bo-left h3{font-size:1.9rem;margin-bottom:6px}
-.bo-left .bo-tag{color:var(--cyan);font-size:.95rem;margin-bottom:20px;font-family:'JetBrains Mono',monospace;letter-spacing:.02em}
-.bo-feats{list-style:none;display:grid;gap:11px;margin-bottom:22px}
-.bo-feats li{display:flex;gap:11px;align-items:flex-start;color:var(--text);font-size:.95rem}
-.bo-feats svg{width:17px;height:17px;stroke:var(--cyan);fill:none;stroke-width:2;flex:0 0 17px;margin-top:4px}
-.bo-disclosure{display:flex;gap:12px;padding:15px 18px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.25)}
-.bo-disclosure svg{width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:1.5;flex:0 0 18px;margin-top:2px}
-.bo-disclosure p{font-size:.8rem;color:var(--muted);line-height:1.6}
-.bo-right{text-align:center;background:rgba(0,0,0,.3);border:1px solid var(--line-2);border-radius:16px;padding:32px 26px}
-.bo-invite{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted-2);letter-spacing:.04em}
-.bo-invite b{color:var(--cyan);letter-spacing:.08em}
-.bo-price{font-family:'Space Grotesk';font-size:3.4rem;font-weight:600;color:var(--up);line-height:1}
-.bo-price s{font-size:1.5rem;color:var(--muted-2);font-weight:400;text-decoration-color:var(--down);margin-right:4px;vertical-align:middle}
-.bo-price-note{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted-2);letter-spacing:.08em;text-transform:uppercase;margin:6px 0 4px}
-.bo-deposit{font-size:.82rem;color:var(--muted);margin-bottom:22px}
-.bo-deposit b{color:var(--cyan)}
-.bo-cta{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  background:linear-gradient(120deg,var(--cyan),var(--blue));color:#04121A;font-family:'Space Grotesk';font-weight:600;
-  font-size:.98rem;padding:15px;border-radius:10px;border:none;cursor:pointer;transition:.2s;
-  box-shadow:0 8px 30px -8px rgba(56,229,255,.5)}
-.bo-cta:hover{transform:translateY(-2px);box-shadow:0 12px 40px -8px rgba(56,229,255,.7)}
-.bo-cta svg{width:18px;height:18px}
-@media(max-width:840px){.bo-grid{grid-template-columns:1fr;gap:26px}.broker-offer{padding:28px 22px}}
-.pay-tabs{display:flex;gap:8px;margin-bottom:16px}
-.pay-tab{flex:1;padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02);
-  color:var(--muted);font-family:'Space Grotesk';font-size:.86rem;font-weight:500;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}
-.pay-tab svg{width:16px;height:16px}
-.pay-tab.on{border-color:var(--cyan);background:rgba(56,189,248,.08);color:var(--text)}
-.net-warn{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:11px 14px;border-radius:8px;
-  border:1px solid rgba(255,107,107,.28);background:rgba(255,107,107,.06)}
-.net-warn svg{width:17px;height:17px;stroke:var(--down);fill:none;stroke-width:1.8;flex:0 0 17px;margin-top:1px}
-.net-warn p{font-size:.76rem;color:var(--muted);line-height:1.55}
-.net-warn b{color:var(--text);font-weight:600}
-.net-badge{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.66rem;
-  letter-spacing:.06em;color:var(--amber);padding:3px 9px;border:1px solid rgba(255,184,77,.3);border-radius:20px;background:rgba(255,184,77,.08);margin-left:auto}
-.pay-id-row .piv.addr{font-size:.82rem;word-break:break-all;line-height:1.4}
-.pay-box{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:rgba(240,185,11,.04);margin-bottom:22px}
-.pay-box .pbt{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text);margin-bottom:12px}
-.pay-box .pbt svg{width:20px;height:20px}
-.pay-id-row{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
-.pay-id-row .pil{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--muted-2);letter-spacing:.08em;text-transform:uppercase}
-.pay-id-row .piv{font-family:'JetBrains Mono',monospace;font-size:1.05rem;color:var(--cyan);font-weight:500;flex:1}
-.copy-btn{background:rgba(56,189,248,.1);border:1px solid var(--line-2);color:var(--cyan);border-radius:6px;
-  padding:6px 12px;font-size:.74rem;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:.2s;white-space:nowrap}
-.copy-btn:hover{background:rgba(56,189,248,.18)}
-.copy-btn.done{color:var(--up);border-color:rgba(63,224,160,.4);background:rgba(63,224,160,.1)}
-.terms-box{max-height:150px;overflow-y:auto;border:1px solid var(--line);border-radius:10px;padding:16px 18px;
-  background:rgba(0,0,0,.2);margin-bottom:16px;font-size:.8rem;color:var(--muted);line-height:1.6}
-.terms-box h4{font-family:'Space Grotesk';font-size:.88rem;color:var(--text);margin:0 0 8px}
-.terms-box p{margin-bottom:8px}
-.terms-check{display:flex;gap:11px;align-items:flex-start;cursor:pointer;margin-bottom:20px;user-select:none}
-.terms-check input{margin-top:3px;width:18px;height:18px;flex:0 0 18px;accent-color:var(--cyan);cursor:pointer}
-.terms-check span{font-size:.86rem;color:var(--muted)}
-.terms-check a{color:var(--cyan);text-decoration:underline}
-.pay-steps{display:grid;gap:8px;margin-bottom:20px;padding:16px 18px;background:rgba(42,171,238,.05);border:1px solid rgba(42,171,238,.2);border-radius:10px}
-.pay-step{display:flex;gap:11px;align-items:flex-start;font-size:.86rem;color:var(--muted)}
-.pay-step .ps-n{width:20px;height:20px;flex:0 0 20px;border-radius:6px;background:#2AABEE;color:#04121A;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center}
-.modal-pay-btn{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#2AABEE;color:#04121A;
-  font-family:'Space Grotesk';font-weight:600;font-size:.98rem;padding:16px;border:none;border-radius:10px;cursor:pointer;transition:.2s}
-.modal-pay-btn:disabled{opacity:.4;cursor:not-allowed}
-.modal-pay-btn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 12px 40px -10px rgba(42,171,238,.6)}
-.modal-pay-btn svg{width:19px;height:19px}
-.modal-hint{text-align:center;font-size:.76rem;color:var(--muted-2);margin-top:14px;line-height:1.5}
-/* ---------- MODAL CHECKOUT END ---------- */
-.pay-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 20px;margin-top:22px;
-  padding:16px 22px;border:1px solid var(--line);border-radius:12px;background:rgba(240,185,11,.04);max-width:640px;margin-left:auto;margin-right:auto}
-.pay-strip .pay-ico{display:flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:.06em;color:var(--text)}
-.pay-strip .pay-ico svg{width:20px;height:20px}
-.pay-strip .pay-sep{width:1px;height:20px;background:var(--line);display:inline-block}
-.pay-strip .pay-txt{font-size:.84rem;color:var(--muted)}
-.pay-strip .pay-btn{display:inline-flex;align-items:center;gap:8px;background:#F0B90B;color:#1A1400;font-family:'Space Grotesk';font-weight:600;
-  font-size:.86rem;padding:10px 18px;border-radius:8px;transition:.2s;white-space:nowrap}
-.pay-strip .pay-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px -8px rgba(240,185,11,.6)}
-.pay-strip .pay-btn svg{width:16px;height:16px}
-.capital-note{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:30px;padding:16px 22px;
-  border:1px solid var(--line);border-radius:12px;background:rgba(56,189,248,.03);max-width:640px;margin-left:auto;margin-right:auto}
-.capital-note svg{width:20px;height:20px;stroke:var(--cyan);fill:none;stroke-width:1.5;flex:0 0 20px}
-.capital-note p{font-size:.86rem;color:var(--muted)}
-.capital-note b{color:var(--text);font-weight:500}
-@media(max-width:560px){.license-card{flex-direction:column;text-align:center;align-items:stretch}.license-card .lc-feats{justify-content:center}}
-.plan ul{list-style:none;margin:26px 0;display:grid;gap:13px;flex:1}
-.plan li{display:flex;gap:11px;color:var(--muted);font-size:.92rem;align-items:flex-start}
-.plan li svg{width:16px;height:16px;stroke:var(--cyan);flex:0 0 16px;margin-top:4px;fill:none;stroke-width:2}
-.includes{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.inc{display:flex;align-items:center;gap:11px;padding:16px 18px;background:var(--bg-3);border:1px solid var(--line);border-radius:12px;font-size:.9rem;transition:.2s}
-.inc:hover{border-color:var(--line-2)}
-.inc svg{width:17px;height:17px;stroke:var(--cyan);flex:0 0 17px;fill:none;stroke-width:2}
-.support-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:stretch}
-.support-card{background:var(--bg-3);border:1px solid var(--line);border-radius:18px;padding:38px;position:relative;overflow:hidden}
-.support-card.primary{border-color:var(--line-2);background:linear-gradient(165deg,rgba(56,189,248,.06),var(--bg-3))}
-.support-card h3{font-size:1.6rem;margin-bottom:10px}
-.support-card>p{color:var(--muted);font-size:.96rem;margin-bottom:22px}
-.support-steps{list-style:none;display:grid;gap:14px;margin-bottom:26px}
-.support-steps li{display:flex;gap:14px;align-items:flex-start;color:var(--muted);font-size:.94rem}
-.support-steps .sn{width:26px;height:26px;flex:0 0 26px;border-radius:8px;background:rgba(56,189,248,.1);border:1px solid var(--line-2);
-  color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:.76rem;display:flex;align-items:center;justify-content:center;margin-top:1px}
-.wa-btn{display:inline-flex;align-items:center;gap:10px;background:#2AABEE;color:#04121A;font-family:'Space Grotesk';font-weight:600;
-  font-size:.95rem;padding:14px 26px;border-radius:10px;transition:.22s;box-shadow:0 8px 30px -10px rgba(42,171,238,.6)}
-.wa-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px -10px rgba(42,171,238,.8)}
-.wa-btn svg{width:20px;height:20px}
-.dl-row{display:flex;flex-direction:column;gap:12px}
-.dl{display:flex;align-items:center;gap:14px;padding:16px 20px;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:12px;transition:.2s}
-.dl:hover{border-color:var(--line-2)}
-.dl .os{width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:rgba(56,189,248,.1);display:flex;align-items:center;justify-content:center}
-.dl .os svg{width:20px;height:20px;stroke:var(--cyan);fill:none;stroke-width:1.5}
-.dl .dt{flex:1}
-.dl .dt b{display:block;font-family:'Space Grotesk';font-weight:500;font-size:.95rem;color:var(--text)}
-.dl .dt span{font-size:.8rem;color:var(--muted-2)}
-.dl .arr{color:var(--cyan)}
-.safety{margin-top:22px;padding:18px 20px;border:1px solid rgba(255,184,77,.2);background:rgba(255,184,77,.04);border-radius:12px;display:flex;gap:14px}
-.safety svg{width:20px;height:20px;stroke:var(--amber);fill:none;stroke-width:1.5;flex:0 0 20px;margin-top:2px}
-.safety p{font-size:.84rem;color:var(--muted);line-height:1.65}
-.safety b{color:var(--text);font-weight:500}
-.plan-note{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--cyan-deep);letter-spacing:.04em}
-@media(max-width:960px){.support-grid{grid-template-columns:1fr}}
-.transparency{background:linear-gradient(150deg,var(--bg-2),#070A10);border:1px solid var(--line-2);border-radius:22px;padding:56px;position:relative;overflow:hidden}
-.transparency::before{content:"";position:absolute;top:-50%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(45,125,255,.1),transparent 60%);filter:blur(20px)}
-.transp-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center;position:relative}
-.transp-quote{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;line-height:1.45;color:var(--text);font-weight:400}
-.transp-metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.tm{padding:18px;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:12px}
-.tm .k{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.1em;color:var(--muted-2);text-transform:uppercase}
-.tm .v{font-family:'Space Grotesk',sans-serif;font-size:1.7rem;color:var(--cyan);margin-top:4px;font-weight:600}
-.faq-list{max-width:840px;margin:0 auto}
-.faq-item{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden;transition:.25s;background:var(--bg-3)}
-.faq-item.open{border-color:var(--line-2)}
-.faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:1.08rem;font-weight:500;padding:22px 24px;display:flex;justify-content:space-between;gap:20px;align-items:center}
-.faq-q .plus{color:var(--cyan);font-size:1.4rem;transition:.3s;flex:0 0 auto;line-height:1}
-.faq-item.open .plus{transform:rotate(45deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;color:var(--muted)}
-.faq-a p{padding:0 24px 22px;font-size:.95rem}
-.final{text-align:center;padding:130px 0;position:relative}
-.final::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(56,189,248,.12),transparent 65%);filter:blur(30px);pointer-events:none}
-.final h2{font-size:clamp(2.2rem,5vw,3.8rem);margin-bottom:18px;position:relative}
-.final p{color:var(--muted);font-size:1.12rem;max-width:540px;margin:0 auto 36px;position:relative}
-.disclaimer{background:rgba(255,184,77,.05);border:1px solid rgba(255,184,77,.22);border-radius:14px;padding:24px 28px;max-width:940px;margin:0 auto;display:flex;gap:18px;align-items:flex-start}
-.disclaimer svg{width:22px;height:22px;stroke:var(--amber);flex:0 0 22px;margin-top:2px;fill:none;stroke-width:1.5}
-.disclaimer p{font-size:.86rem;color:var(--muted);line-height:1.7}
-.disclaimer b{color:var(--text);font-weight:500}
-footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:100px}
-.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px;margin-bottom:44px}
-.foot-brand p{color:var(--muted);font-size:.92rem;max-width:340px;margin-top:16px}
-.foot-col h4{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);margin-bottom:18px;font-weight:400}
-.foot-col a{display:block;color:var(--muted);font-size:.9rem;padding:6px 0;transition:.2s}
-.foot-col a:hover{color:var(--cyan)}
-.foot-bottom{border-top:1px solid var(--line);padding-top:26px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:.82rem;color:var(--muted-2)}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
-.reveal.in{opacity:1;transform:none}
-@media(max-width:960px){
-  .hero-grid,.transp-grid{grid-template-columns:1fr;gap:44px}
-  .shield-grid{grid-template-columns:1fr}
-  .g-3,.price-grid,.stats-grid{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr 1fr}
-  .step{border-left:none;padding:0}
-  .includes{grid-template-columns:1fr 1fr}
-  .foot-grid{grid-template-columns:1fr;gap:30px}
-  .nav-links,.nav-cta .btn-ghost{display:none}
-  .nav-toggle{display:block}
-  .nav-links.open{display:flex;position:absolute;top:70px;left:0;right:0;flex-direction:column;background:var(--bg-2);border-bottom:1px solid var(--line);padding:20px 24px;gap:16px}
-  .transparency{padding:32px 22px}
-  .section{padding:84px 0}
-}
-@media(max-width:560px){
-  .steps,.includes{grid-template-columns:1fr}
-  .ticket-grid{grid-template-columns:1fr 1fr}
-  .disclaimer{flex-direction:column}
-  .hero-metrics{gap:22px}
-}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .rv{opacity:1;transform:none;transition:none}*{transition:none!important}}
 </style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LodgingBusiness",
+   "@id": "https://TU-DOMINIO.com.ar/#alojamiento",
+   "name": "Cabañas El Manantial de Iguazú",
+   "description": "Cabañas monoambiente, familiares y deluxe para 2 a 6 personas, con dos piscinas (una semi climatizada), parque con juegos y quincho con parrilla compartida en Puerto Iguazú, Misiones. Reserva directa con descuento y seña.",
+   "url": "https://TU-DOMINIO.com.ar/",
+   "telephone": "+5493757548838",
+   "image": [
+    "https://TU-DOMINIO.com.ar/img/pileta-aerea-1600.webp",
+    "https://TU-DOMINIO.com.ar/img/cabana-flores-1600.webp",
+    "https://TU-DOMINIO.com.ar/img/pileta-azul-1600.webp"
+   ],
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Montecarlo 38",
+    "addressLocality": "Puerto Iguazú",
+    "addressRegion": "Misiones",
+    "postalCode": "3370",
+    "addressCountry": "AR"
+   },
+   "checkinTime": "14:00",
+   "checkoutTime": "11:00",
+   "petsAllowed": false,
+   "priceRange": "$70.000 - $130.000 ARS por noche (valores desde el 16 de diciembre)",
+   "sameAs": [
+    "https://www.instagram.com/elmanantialdeiguazu"
+   ],
+   "amenityFeature": [
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "Piscina",
+     "value": true
+    },
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "Piscina semi climatizada",
+     "value": true
+    },
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "WiFi",
+     "value": true
+    },
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "TV",
+     "value": true
+    },
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "Aire acondicionado",
+     "value": true
+    },
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "Cocina equipada",
+     "value": true
+    },
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "Heladera",
+     "value": true
+    },
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "Parrilla y quincho compartidos",
+     "value": true
+    },
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "Estacionamiento gratuito",
+     "value": true
+    },
+    {
+     "@type": "LocationFeatureSpecification",
+     "name": "Zona de juegos para niños",
+     "value": true
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "¿Cómo reservo directo?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Elegí cabaña, fechas y cantidad de personas en el formulario y vas a ver el valor por noche y el total. Al tocar Reservar se abre WhatsApp con todos los datos de tu reserva; ahí te confirmamos disponibilidad y la seña."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Hay descuento por reservar directo?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Sí. Reservando directo con el complejo tenés un descuento especial; te pasamos el valor según las fechas por WhatsApp."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Qué tipos de cabaña hay y para cuántas personas?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Hay tres tipos: cabaña monoambiente para 2 o 3 personas, cabaña familiar de dos plantas para 3 a 6 personas y cabaña deluxe para 4 o 5 personas."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Cuánto cuestan las cabañas por noche?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Valores a partir del 16 de diciembre: monoambiente $70.000 (2 personas) y $75.000 (3); familiar $90.000 (3), $100.000 (4), $110.000 (5) y $120.000 (6); deluxe $120.000 (4) y $130.000 (5). Para otras fechas, consultá por WhatsApp."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Los menores pagan?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Los menores de 6 años no pagan."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Hay descuento para pastores?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Sí: 80% de descuento a pastores, solo en temporada baja por 3 noches, fuera de fin de semana largo y fuera de Navidad o Año Nuevo."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Tienen pileta?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Sí, hay dos piscinas, una de ellas semi climatizada, con deck y reposeras."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Qué incluyen las cabañas?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Blanquería completa, wifi, TV, pava eléctrica, cocina con horno, aire acondicionado, agua potable fría y caliente, cubiertos y vajilla, heladera, tender, bolsas de residuos y papel higiénico. La cabaña deluxe suma estacionamiento techado y parrilla privada."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Ofrecen desayuno o comidas?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No, el complejo no ofrece comidas (ni desayuno, almuerzo o cena). Las cabañas tienen cocina y el quincho tiene parrilla para cocinar."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Se aceptan mascotas?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No, el complejo no admite mascotas."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿A qué hora es el check-in y el check-out?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "El check-in es desde las 14:00 y el check-out hasta las 11:00."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Dónde queda El Manantial de Iguazú?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "En Montecarlo 38, Zona Granja, Puerto Iguazú, Misiones. Está a unos 2,6 km del centro, a 10 minutos a pie del Biocentro Iguazú y a 9 minutos a pie de La Aripuca."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "¿Tiene wifi, parrilla y estacionamiento?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Sí: wifi, quincho con parrilla amplia y estacionamiento gratuito frente a la cabaña, dentro del predio."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
 </head>
 <body>
-
-<nav class="nav">
-  <div class="wrap nav-inner">
-    <a href="#" class="brand" aria-label="Origen Trade Bridge — inicio">
-      <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <rect x="2" y="2" width="36" height="36" rx="9" stroke="#38E5FF" stroke-width="1.5"/>
-        <path d="M11 25 L17 19 L22 23 L29 14" stroke="#38E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="29" cy="14" r="2.4" fill="#38E5FF"/>
-      </svg>
-      <span data-cfg="brand.name">Origen Trade Bridge</span>
-    </a>
-    <div class="nav-links" id="navLinks">
-      <a href="#problema">Problema</a><a href="#como">Cómo funciona</a><a href="#riesgo">Gestión de riesgo</a><a href="#planes">Planes</a><a href="#soporte">Soporte</a><a href="#faq">FAQ</a>
-    </div>
-    <div class="nav-cta">
-      <a href="#como" class="btn btn-ghost">Ver cómo funciona</a>
-      <a href="#planes" class="btn btn-primary">Ver planes</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
-    </div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+<symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 9c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-9z"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14zM5 19l8-8"/></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r=".8"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.5L3 21l1.6-5.4A8.5 8.5 0 1 1 21 12z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.6-2-1-.9.7a3.5 3.5 0 0 1-1.5-1.5l.7-.9-1-2z"/></symbol>
+</defs></svg>
+<a class="skip" href="#reservar">Ir a reservar</a>
+<header class="top"><div class="in">
+ <a class="brand" href="#inicio"><b>EM</b><span>El Manantial<small>de Iguazú · Misiones</small></span></a>
+ <nav aria-label="Principal"><a href="#cabanas">Cabañas</a><a href="#tarifas">Tarifas</a><a href="#predio">Pileta y parque</a><a href="#ubicacion">Ubicación</a><a href="#preguntas">Preguntas</a></nav>
+ <a class="btn" href="#reservar">Reservar<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a>
+</div></header>
+<main>
+<section id="inicio" class="hero" aria-labelledby="t-inicio">
+ <img class="bg" src="img/pileta-aerea-900.webp" srcset="img/pileta-aerea-900.webp 900w, img/pileta-aerea-1600.webp 1600w" sizes="100vw" width="1600" height="1067" alt="Vista aérea de la pileta, el deck de madera y el parque de Cabañas El Manantial rodeados de selva" fetchpriority="high">
+ <div class="hero-in">
+  <div>
+   <h1 id="t-inicio">Cabañas El Manantial de Iguazú</h1>
+   <p class="lead">Cabañas monoambiente, familiares y deluxe con pileta, parque y quincho en Puerto Iguazú. Para 2 a 6 personas, con descuento si reservás directo.</p>
+   <div class="acts"><a class="btn lt" href="#reservar">Reservar directo<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a><a class="btn gl" href="#cabanas">Ver cabañas</a></div>
   </div>
-</nav>
-
-<header class="hero hero-img">
-  <div class="hero-img-bg" role="img" aria-label="Estación de trading profesional de Origen Trade con pantallas de XAUUSD, BTCUSD y US100, señal entrante por Telegram y panel de señales en tiempo real"></div>
-  <div class="wrap hero-inner">
-    <div class="hero-copy reveal in">
-      <div class="hero-badge"><span class="live"></span>AUTOMATIZACIÓN · SEÑALES PROFESIONALES · MT5</div>
-      <h1>Señales profesionales<br>y automatización,<br><span class="grad">en un solo lugar.</span></h1>
-      <p class="sub" data-cfg="hero.sub">Un sistema que recibe señales profesionales y las ejecuta automáticamente en tu MetaTrader 5, con gestión de riesgo gestionada por el robot para proteger tu capital. Sin copiar operaciones a mano, sin decisiones emocionales.</p>
-      <div class="hero-actions">
-        <a href="#planes" class="btn btn-primary">Ver planes<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a href="#demo" class="btn btn-ghost">Ver cómo funciona</a>
-      </div>
-      <div class="hero-metrics">
-        <div class="hm"><div class="k">Latencia de captura</div><div class="v">Tiempo real</div></div>
-        <div class="hm"><div class="k">Ejecución</div><div class="v">3 tramos config.</div></div>
-        <div class="hm"><div class="k">Reconexión</div><div class="v">Automática</div></div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<div class="strip">
-  <div class="wrap strip-in">
-    <span class="strip-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 20h8"/></svg>MetaTrader 5</span>
-    <span class="strip-item"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>Ejecución automática</span>
-    <span class="strip-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Gestión de riesgo</span>
-    <span class="strip-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Señales en tiempo real</span>
-    <span class="strip-item"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-6.2-8.5"/><path d="M21 4v5h-5"/></svg>Reconexión ante cortes</span>
-  </div>
-</div>
-
-<section class="diff">
-  <div class="wrap">
-    <div class="diff-head reveal">
-      <span class="eyebrow">Qué hace diferente a Origen Trade Bridge</span>
-      <h2>Dos cosas que suelen estar separadas, en un solo sistema.</h2>
-      <p>La mayoría te vende señales por un lado, o un robot por el otro. Acá las dos cosas trabajan juntas y automatizadas.</p>
-    </div>
-    <div class="diff-cols reveal">
-      <div class="diff-col">
-        <div class="dc-ico"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
-        <h3>Señales profesionales</h3>
-        <p>El sistema recibe señales profesionales validadas y las interpreta automáticamente. No dependés de estar mirando gráficos ni de copiar nada a mano.</p>
-      </div>
-      <div class="diff-plus">+</div>
-      <div class="diff-col">
-        <div class="dc-ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div>
-        <h3>Automatización real</h3>
-        <p>El robot ejecuta en tu MetaTrader 5, divide en tramos y administra cada operación con su gestión de riesgo. Trabaja de forma desatendida.</p>
-      </div>
-    </div>
-    <div class="diff-result reveal">
-      <div class="dr-title">El robot no solo ejecuta: <b>protege tu capital</b>.</div>
-      <p>Break-even automático, trailing stop y cierre parcial por tramos — la operación se gestiona sola para cuidar lo que ya ganaste.</p>
-    </div>
-  </div>
+  <a class="fl" href="#cabanas"><img src="img/familiar-fachada-900.webp" srcset="img/familiar-fachada-900.webp 900w, img/familiar-fachada-1600.webp 1600w" sizes="290px" width="1600" height="1067" alt="Cabaña familiar de dos plantas con palmeras y jardín" loading="lazy" decoding="async"><p>Monoambiente, familiar y deluxe<span>Ver opciones →</span></p></a>
+ </div>
+ <form class="reserva" aria-label="Reservar por WhatsApp">
+ <label>Cabaña<select name="cabana" required><option value="">Elegí</option><option value="mono">Monoambiente</option><option value="fam">Familiar</option><option value="dlx">Deluxe</option></select></label>
+ <label>Entrada<input type="date" name="entrada" required></label>
+ <label>Salida<input type="date" name="salida" required></label>
+ <label>Personas<select name="personas" required><option value="">Elegí</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+ <button class="btn" type="submit">Reservar por WhatsApp<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></button>
+ <p class="sug" aria-live="polite"></p>
+ <p class="estado" role="status"></p>
+ <a class="wa btn ol" href="#" hidden target="_blank" rel="noopener noreferrer">Abrir WhatsApp</a>
+</form>
 </section>
 
-<section class="section" id="problema">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">El problema</span>
-      <h2>El problema no siempre es encontrar la señal.</h2>
-      <p>Muchas veces la dificultad está en la ejecución: llevar esa señal a la operación de forma consistente, sin depender de estar mirando la pantalla.</p>
-    </div>
-    <div class="grid g-3">
-      <div class="card reveal"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Timing</h3><p>Las señales llegan cuando no estás frente a la computadora, y la ventana de entrada se cierra.</p></div>
-      <div class="card reveal"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 12h8M8 16h5"/></svg></div><h3>Cálculo manual</h3><p>Definir el lotaje a mano según el riesgo abre la puerta a errores, sobre todo bajo presión de tiempo.</p></div>
-      <div class="card reveal"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div><h3>Ejecución emocional</h3><p>Dudar, adelantarse o mover un stop por impulso desvía la operación del plan original.</p></div>
-    </div>
-  </div>
+<section class="sec w" aria-labelledby="t-conf">
+ <div class="hd rv"><div><span class="tag">El complejo</span><h2 id="t-conf">Tu descanso empieza acá</h2></div>
+  <p>Complejo cerrado de cabañas en Montecarlo 38, Zona Granja. Cerca del centro y del acceso al Parque Nacional Iguazú, para volver y descansar después de recorrer las Cataratas.</p></div>
+ <div class="feat">
+  <article class="dk rv"><span class="ic"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-wave"/></svg></span><div><h3>Dos piscinas, una semi climatizada</h3><p>Con deck y reposeras entre la vegetación.</p></div></article>
+  <article class="rv"><span class="ic"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-leaf"/></svg></span><div><h3>Parque con juegos</h3><p>Espacio verde para que los chicos jueguen.</p></div></article>
+  <article class="rv"><span class="ic"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-flame"/></svg></span><div><h3>Quincho con parrilla</h3><p>Parrilla compartida para armar el asado.</p></div></article>
+  <article class="rv"><span class="ic"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-wifi"/></svg></span><div><h3>Todo para cocinar y descansar</h3><p>Aire, wifi, TV, cocina con horno, heladera y blanquería completa.</p></div></article>
+ </div>
 </section>
 
-<section class="section" id="solucion" style="background:var(--bg-2)">
-  <div class="wrap">
-    <div class="section-head center reveal">
-      <span class="eyebrow">La solución</span>
-      <h2>Automatizá la parte repetitiva.</h2>
-      <p>El sistema toma la señal desde nuestra infraestructura y la lleva hasta tu MetaTrader 5, paso por paso.</p>
-    </div>
-    <div class="flow reveal">
-      <span class="flow-node">SEÑAL</span><span class="flow-arrow">→</span>
-      <span class="flow-node">VALIDACIÓN</span><span class="flow-arrow">→</span>
-      <span class="flow-node">RIESGO</span><span class="flow-arrow">→</span>
-      <span class="flow-node accent">EA</span><span class="flow-arrow">→</span>
-      <span class="flow-node">MT5</span><span class="flow-arrow">→</span>
-      <span class="flow-node">BROKER</span>
-    </div>
-    <div class="grid g-3">
-      <div class="card reveal"><span class="idx">01</span><h3>Señales</h3><p>El sistema captura las señales desde nuestra infraestructura en tiempo real, con reconexión automática ante cortes de internet.</p></div>
-      <div class="card reveal"><span class="idx">02</span><h3>Automatización</h3><p>El EA interpreta la señal, calcula el lotaje según tu riesgo y prepara la operación en MT5.</p></div>
-      <div class="card reveal"><span class="idx">03</span><h3>Gestión</h3><p>La ejecución respeta tus parámetros y divide la operación en tres tramos configurables con objetivos distintos.</p></div>
-    </div>
-  </div>
+<section id="cabanas" class="sec w" aria-labelledby="t-cab">
+ <div class="hd rv"><div><span class="tag">Alojamiento</span><h2 id="t-cab">Elegí tu cabaña</h2></div>
+  <p>Tres tipos de cabaña para 2 a 6 personas. Reservando directo tenés descuento.</p></div>
+ <div class="cab">
+  <article class="cc rv"><img src="img/monoambiente-fachada-900.webp" srcset="img/monoambiente-fachada-900.webp 900w, img/monoambiente-fachada-1600.webp 1600w" sizes="(min-width:1000px) 300px, 90vw" width="1600" height="1067" alt="Fachada de ladrillo de las cabañas monoambiente, puertas 3 y 4, bajo árboles" loading="lazy" decoding="async"><h3>Cabaña monoambiente</h3><p class="m"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-user"/></svg> 2 o 3 personas</p><p class="pr">Desde <b>$70.000</b> por noche</p><p>Ambiente único con cocina, aire acondicionado y TV, y estacionamiento frente a la cabaña.</p><a class="btn" href="#reservar" data-c="mono" data-p="2">Reservar<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a></article>
+  <article class="cc rv"><img src="img/familiar-fachada-900.webp" srcset="img/familiar-fachada-900.webp 900w, img/familiar-fachada-1600.webp 1600w" sizes="(min-width:1000px) 300px, 90vw" width="1600" height="1067" alt="Cabaña familiar de dos plantas con techo verde y palmeras" loading="lazy" decoding="async"><h3>Cabaña familiar</h3><p class="m"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-user"/></svg> 3 a 6 personas</p><p class="pr">Desde <b>$90.000</b> por noche</p><p>Dos plantas con sala comedor, cocina y aire acondicionado en la sala y en la habitación del primer piso.</p><a class="btn" href="#reservar" data-c="fam" data-p="4">Reservar<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a></article>
+  <article class="cc rv"><img src="img/deluxe-fachada-900.webp" srcset="img/deluxe-fachada-900.webp 900w, img/deluxe-fachada-1600.webp 1600w" sizes="(min-width:1000px) 300px, 90vw" width="1600" height="1067" alt="Cabaña deluxe de ladrillo con galería techada y sillones" loading="lazy" decoding="async"><h3>Cabaña deluxe</h3><p class="m"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-user"/></svg> 4 o 5 personas</p><p class="pr">Desde <b>$120.000</b> por noche</p><p>Con aire frío y calor en las 2 habitaciones y en la sala, estacionamiento techado y parrilla privada.</p><a class="btn" href="#reservar" data-c="dlx" data-p="4">Reservar<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a></article>
+  <article class="cc dk rv"><span class="ic"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg></span><div><h3>Reservá directo</h3><p>Descuento por reserva directa y confirmación con una seña.</p></div><a class="btn lt" href="#reservar">Consultar fechas<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a></article>
+ </div>
+ <div class="int rv">
+  <figure><img src="img/familiar-cocina-900.webp" srcset="img/familiar-cocina-900.webp 900w, img/familiar-cocina-1600.webp 1568w" sizes="(min-width:1000px) 400px, 90vw" width="900" height="1350" alt="Cocina de la cabaña familiar con heladera, cocina con horno, mesada de granito y alacenas de madera" loading="lazy" decoding="async"><figcaption>Cocina de la cabaña familiar</figcaption></figure>
+  <figure><img src="img/familiar-escalera-900.webp" srcset="img/familiar-escalera-900.webp 900w, img/familiar-escalera-1600.webp 1568w" sizes="(min-width:1000px) 400px, 90vw" width="900" height="1350" alt="Entrada de la cabaña familiar con escalera de madera al primer piso y techo de madera" loading="lazy" decoding="async"><figcaption>Entrada y escalera, cabaña familiar</figcaption></figure>
+  <figure><img src="img/familiar-pileta-900.webp" srcset="img/familiar-pileta-900.webp 900w, img/familiar-pileta-1600.webp 1568w" sizes="(min-width:1000px) 400px, 90vw" width="900" height="1350" alt="Cabaña familiar frente a la pileta con baranda de madera" loading="lazy" decoding="async"><figcaption>Cabaña familiar frente a la pileta</figcaption></figure>
+ </div>
 </section>
 
-<section class="section" id="como">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Cómo funciona</span>
-      <h2>Cuatro pasos, una sola vez.</h2>
-      <p>La configuración se hace al inicio. Después, el robot trabaja de forma desatendida.</p>
-    </div>
-    <div class="steps">
-      <div class="step reveal"><span class="num">01</span><h3>Elegí tu plan</h3><p>Seleccionás según la cantidad de cuentas y las funciones que necesitás.</p></div>
-      <div class="step reveal"><span class="num">02</span><h3>Instalá el EA</h3><p>Cargás el Expert Advisor en tu MetaTrader 5 siguiendo la guía.</p></div>
-      <div class="step reveal"><span class="num">03</span><h3>Configurá el riesgo</h3><p>Vinculás tu cuenta y definís riesgo, límites y sesiones de trading.</p></div>
-      <div class="step reveal"><span class="num">04</span><h3>Ejecutá automático</h3><p>El sistema captura las señales autorizadas y las ejecuta sin intervención manual.</p></div>
-    </div>
-  </div>
+<section id="tarifas" class="sec w" aria-labelledby="t-tar">
+ <div class="hd rv"><div><span class="tag">Tarifas</span><h2 id="t-tar">Valores por noche</h2></div>
+  <p>Valores a partir del 16 de diciembre. Para otras fechas, consultá por WhatsApp.</p></div>
+ <div class="tar rv">
+  <div><h3>Monoambiente</h3><dl><div><dt>2 personas</dt><dd>$70.000</dd></div><div><dt>3 personas</dt><dd>$75.000</dd></div></dl></div>
+  <div><h3>Familiar</h3><dl><div><dt>3 personas</dt><dd>$90.000</dd></div><div><dt>4 personas</dt><dd>$100.000</dd></div><div><dt>5 personas</dt><dd>$110.000</dd></div><div><dt>6 personas</dt><dd>$120.000</dd></div></dl></div>
+  <div><h3>Deluxe</h3><dl><div><dt>4 personas</dt><dd>$120.000</dd></div><div><dt>5 personas</dt><dd>$130.000</dd></div></dl></div>
+ </div>
+ <div class="obs rv"><h3>Observaciones</h3><ul>
+  <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Los menores de 6 años no pagan.</li>
+  <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Descuento a pastores del 80%, solo en temporada baja por 3 noches, fuera de fin de semana largo y fuera de Navidad o Año Nuevo.</li></ul></div>
 </section>
 
-<section class="section" id="demo" style="background:var(--bg-2)">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Demostración</span>
-      <h2>De la señal a la operación.</h2>
-      <p>El recorrido que hace cada señal dentro del sistema. La representación es ilustrativa del flujo, no de una operación real.</p>
-    </div>
-    <div class="grid g-2">
-      <div class="dash reveal">
-        <div class="dash-bar"><span class="dash-dot"></span><span class="dash-dot"></span><span class="dash-dot"></span><span class="dash-title">signal · inbound</span></div>
-        <div class="dash-body">
-          <div class="ticket">
-            <div class="ticket-top"><span class="sym">XAUUSD</span><span class="side">BUY</span></div>
-            <div class="ticket-grid">
-              <div class="tk"><div class="l">Entry</div><div class="n">3382.50</div></div>
-              <div class="tk"><div class="l">SL</div><div class="n">3377.50</div></div>
-              <div class="tk"><div class="l">TP</div><div class="n">3392.50</div></div>
-              <div class="tk"><div class="l">Risk</div><div class="n">0.50%</div></div>
-            </div>
-          </div>
-          <p class="mono" style="font-size:.72rem;color:var(--muted-2);letter-spacing:.05em">→ SIGNAL RECEIVED · esperando validación</p>
-        </div>
-      </div>
-      <div class="dash reveal">
-        <div class="dash-bar"><span class="dash-dot"></span><span class="dash-dot"></span><span class="dash-dot"></span><span class="dash-title">ea · execution</span><span class="dash-live"><span class="live"></span>EXECUTED</span></div>
-        <div class="dash-body">
-          <div class="pipeline">
-            <div class="pl on"><span class="ic">✓</span>Símbolo · spread · horario<span class="tag">OK</span></div>
-            <div class="pl on"><span class="ic">✓</span>Lotaje según riesgo<span class="tag">0.50%</span></div>
-            <div class="pl on"><span class="ic">✓</span>Operación abierta<span class="tag">3 TRAMOS</span></div>
-          </div>
-          <div class="ladder">
-            <div class="lad"><span class="lab">Tramo 1 · TP1</span><div class="lad-track"><i class="lad-fill" style="width:34%"></i></div></div>
-            <div class="lad"><span class="lab">Tramo 2 · TP2</span><div class="lad-track"><i class="lad-fill" style="width:34%"></i></div></div>
-            <div class="lad"><span class="lab">Tramo 3 · TP3</span><div class="lad-track"><i class="lad-fill" style="width:32%"></i></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<section id="incluye" class="sec w" aria-labelledby="t-inc">
+ <div class="hd rv"><div><span class="tag">Qué incluye</span><h2 id="t-inc">Todo listo<br>para que llegues y te instales</h2></div>
+  <p>Las cabañas vienen equipadas. No se ofrecen comidas, pero tenés cocina en la cabaña y parrilla en el quincho.</p></div>
+ <div class="inc rv">
+  <div class="a"><h3>En todas las cabañas</h3><ul>
+   <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Blanquería completa</li><li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Wifi</li><li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>TV</li><li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Pava eléctrica</li>
+   <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Agua potable fría y caliente</li><li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Cubiertos y vajilla</li><li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Heladera</li><li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Tender</li>
+   <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Bolsas de residuos y papel higiénico</li><li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Estacionamiento gratuito frente a la cabaña</li></ul></div>
+  <div class="b"><h3>Según la cabaña</h3><ul>
+   <li><span><b>Monoambiente:</b> cocina a gas y horno eléctrico; 1 aire acondicionado que abastece toda la cabaña.</span></li>
+   <li><span><b>Familiar:</b> cocina y horno a gas; aire frío y calor en la habitación del primer piso y en la sala; ventilador en la habitación de planta baja.</span></li>
+   <li><span><b>Deluxe:</b> cocina y horno eléctrico; aire frío y calor en las 2 habitaciones y en la sala comedor; estacionamiento techado y privado; parrilla privada.</span></li></ul></div>
+  <div class="c"><h3>En el parque</h3><ul>
+   <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>2 piscinas, una semi climatizada</li><li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Quincho con parrilla amplia, mesa familiar, ventilador y mesada</li><li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg>Parque y zona de juegos para niños</li></ul>
+   <p class="mut2">No se ofrecen comidas: ni desayuno, almuerzo ni cena.</p></div>
+ </div>
 </section>
 
-<section class="section" id="riesgo">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">SHIELD · Protección de capital</span>
-      <h2>El robot no solo ejecuta: protege tu capital.</h2>
-      <p>La diferencia está acá. Una vez abierta la operación, el sistema la administra solo para cuidar lo que ya ganaste — con mecanismos que un trader manual no logra sostener con disciplina en cada operación.</p>
-    </div>
-    <div class="protect-cards">
-      <div class="protect-card reveal">
-        <div class="pc-step">Mecanismo 01</div>
-        <h3>Break-even automático</h3>
-        <p>Cuando la operación avanza a favor, el robot mueve el stop loss al punto de entrada. A partir de ahí, la operación ya no puede volverse pérdida.</p>
-        <div class="pc-viz"><span class="dot"></span>Entry <span class="arw">→</span> SL movido a Entry <span class="arw">→</span> riesgo 0</div>
-      </div>
-      <div class="protect-card reveal">
-        <div class="pc-step">Mecanismo 02</div>
-        <h3>Trailing stop</h3>
-        <p>A medida que el precio sigue a favor, el stop acompaña la operación de forma dinámica, asegurando ganancia progresiva sin cortar la corrida antes de tiempo.</p>
-        <div class="pc-viz"><span class="dot"></span>SL sigue al precio <span class="arw">→</span> asegura avance</div>
-      </div>
-      <div class="protect-card reveal">
-        <div class="pc-step">Mecanismo 03</div>
-        <h3>Cierre parcial por tramos</h3>
-        <p>La operación se divide en tres tramos con objetivos distintos. El robot cierra parcial en cada nivel, tomando ganancia por etapas y dejando correr el resto.</p>
-        <div class="pc-viz"><span class="dot"></span>TP1 <span class="arw">→</span> TP2 <span class="arw">→</span> TP3</div>
-      </div>
-    </div>
-    <div class="section-head reveal" style="margin-top:20px">
-      <h2 style="font-size:clamp(1.6rem,3.5vw,2.2rem)">Y además, límites que frenan al robot.</h2>
-      <p>Automatizar no significa operar sin control. SHIELD supervisa cada operación y detiene el sistema cuando se cruzan las condiciones que definiste. Es protección, no una garantía contra pérdidas.</p>
-    </div>
-    <div class="shield-grid">
-      <div class="shield-rules">
-        <div class="rule reveal"><span class="cond">3 pérdidas consecutivas</span><span class="act">→ PAUSA AUTOMÁTICA</span></div>
-        <div class="rule reveal"><span class="cond">Límite de pérdida diaria alcanzado</span><span class="act">→ OPERACIONES DETENIDAS</span></div>
-        <div class="rule reveal"><span class="cond">Spread excesivo</span><span class="act">→ OPERACIÓN RECHAZADA</span></div>
-        <div class="rule reveal"><span class="cond">Señal duplicada</span><span class="act">→ OPERACIÓN RECHAZADA</span></div>
-        <div class="rule reveal"><span class="cond">Fuera del horario de mercado</span><span class="act">→ OPERACIÓN RECHAZADA</span></div>
-      </div>
-      <div class="reveal">
-        <p style="color:var(--muted);margin-bottom:18px;font-size:.95rem">Controles configurables:</p>
-        <div class="controls-list">
-          <span class="chip">Riesgo por operación</span><span class="chip">Pérdida diaria máxima</span><span class="chip">Posiciones máximas</span><span class="chip">Control de spread</span><span class="chip">Sesiones de trading</span><span class="chip">Pérdidas consecutivas</span><span class="chip">Stop de emergencia</span><span class="chip">Break-even</span><span class="chip">Trailing stop</span><span class="chip">Cierre por tramos</span>
-        </div>
-        <div class="card" style="margin-top:22px">
-          <h3 style="font-size:1.25rem">Todo gestionado por el robot</h3>
-          <p>Break-even, trailing y cierre parcial no dependen de que estés presente: el robot los aplica en cada operación de forma automática, con la misma disciplina siempre. Esa constancia es lo que protege el capital a lo largo del tiempo.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+<section id="predio" class="sec w" aria-labelledby="t-pre">
+ <div class="hd rv"><div><span class="tag">Pileta, parque y quincho</span><h2 id="t-pre">Para disfrutar<br>sin salir del predio</h2></div>
+  <p>Pileta, deck, juegos para los chicos y un quincho para compartir, todo entre árboles y jardines.</p></div>
+ <div class="bento rv">
+  <div class="bt big"><img src="img/pileta-azul-900.webp" srcset="img/pileta-azul-900.webp 900w, img/pileta-azul-1600.webp 1600w" sizes="(min-width:1000px) 600px, 90vw" width="1600" height="1067" alt="Pileta azulejada con reposeras y deck, con la cabaña al fondo" loading="lazy" decoding="async"><h3>Pileta semi climatizada</h3><p>Dos piscinas con deck y reposeras para descansar al sol.</p></div>
+  <div class="bt"><img src="img/quincho-interior-900.webp" srcset="img/quincho-interior-900.webp 900w, img/quincho-interior-1600.webp 1600w" sizes="(min-width:1000px) 340px, 90vw" width="1600" height="1067" alt="Quincho cubierto con mesas y parrilla de ladrillo" loading="lazy" decoding="async"><h3>Quincho con parrilla</h3></div>
+  <div class="bt"><img src="img/juegos-pileta-900.webp" srcset="img/juegos-pileta-900.webp 900w, img/juegos-pileta-1600.webp 1600w" sizes="(min-width:1000px) 340px, 90vw" width="1600" height="1067" alt="Juegos de madera para chicos junto a la pileta" loading="lazy" decoding="async"><h3>Juegos para chicos</h3></div>
+  <div class="bt"><img src="img/deck-quincho-900.webp" srcset="img/deck-quincho-900.webp 900w, img/deck-quincho-1600.webp 1600w" sizes="(min-width:1000px) 340px, 90vw" width="1600" height="1067" alt="Deck de madera con baranda rústica frente a la pileta" loading="lazy" decoding="async"><h3>Deck y reposeras</h3></div>
+  <div class="bt"><img src="img/pileta-vista-vertical-900.webp" srcset="img/pileta-vista-vertical-900.webp 900w, img/pileta-vista-vertical-1600.webp 1568w" sizes="(min-width:1000px) 340px, 90vw" width="900" height="1350" alt="Dos piletas con deck rodeadas de selva" loading="lazy" decoding="async"><h3>Dos piscinas</h3></div>
+ </div>
 </section>
 
-<section class="section" id="stats" style="background:var(--bg-2)">
-  <div class="wrap pain-wrap">
-    <div class="section-head center reveal">
-      <span class="eyebrow">¿Te pasa esto?</span>
-      <h2>Operar a mano te desgasta más de lo que parece.</h2>
-    </div>
-    <p class="pain-lead reveal">Cansado de <b>copiar señales y llegar tarde</b>, de mover el stop por impulso, de estar pegado a la pantalla para no perderte una entrada.</p>
-    <div class="pain-grid">
-      <div class="pain-item reveal">
-        <div class="pi-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
-        <h3>Llegás tarde a la entrada</h3>
-        <p>Para cuando viste la señal y la cargaste a mano, el precio ya se movió. La operación que era buena, dejó de serlo.</p>
-      </div>
-      <div class="pain-item reveal">
-        <div class="pi-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 12h8M8 16h5"/></svg></div>
-        <h3>Errores al copiar</h3>
-        <p>Un lote mal calculado, un stop en el lugar equivocado, un número tipeado apurado. Copiar a mano, operación tras operación, cansa y falla.</p>
-      </div>
-      <div class="pain-item reveal">
-        <div class="pi-ico"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></div>
-        <h3>La emoción te gana</h3>
-        <p>Cerrás antes por miedo, corrés el stop por ansiedad, dudás en la entrada. Las mejores reglas no sirven si no las cumplís siempre.</p>
-      </div>
-    </div>
-    <div class="pain-turn reveal">
-      <div class="pt-eyebrow">La alternativa</div>
-      <h3>Dejá de hacer la parte que te desgasta.</h3>
-      <p>El robot recibe la señal, calcula el lote, entra a tiempo y gestiona el riesgo con la misma disciplina en cada operación. Vos dejás de estar pegado a la pantalla.</p>
-      <a href="#planes" class="btn btn-primary">Ver planes
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    </div>
-  </div>
+<section class="sec w" aria-labelledby="t-mot">
+ <div class="hd rv"><div><span class="tag">Reserva directa</span><h2 id="t-mot">Motivos para reservar con nosotros</h2></div></div>
+ <div class="mot">
+  <div class="m1 rv"><div class="tx"><ul>
+    <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg><span><b>Descuento exclusivo</b>Mejor valor que en otras plataformas, por reservar directo.</span></li>
+    <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg><span><b>Confirmás con una seña</b>Te pasamos los datos por WhatsApp.</span></li>
+    <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-check"/></svg><span><b>Trato directo</b>Hablás con el complejo, sin intermediarios.</span></li></ul>
+    <a class="btn lt" href="#reservar" style="justify-self:start">Reservar directo<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a></div>
+   <img src="img/quincho-parque-900.webp" srcset="img/quincho-parque-900.webp 900w, img/quincho-parque-1600.webp 1600w" sizes="(min-width:1000px) 500px, 90vw" width="1600" height="1067" alt="Quincho y parque de Cabañas El Manantial" loading="lazy" decoding="async"></div>
+  <div class="m2 rv"><span class="ic" style="background:#fff"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg></span><div><h3>¿Preferís hablar con una persona?</h3><p style="margin-top:.6rem">Escribinos por WhatsApp y te respondemos con disponibilidad y valor final.</p></div>
+   <a class="btn" href="https://wa.me/5493757548838" target="_blank" rel="noopener noreferrer" style="justify-self:start">Abrir WhatsApp<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a></div>
+ </div>
 </section>
 
-<section class="section" id="audience">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Para quién es</span>
-      <h2>Creado para quien quiere automatizar la ejecución.</h2>
-    </div>
-    <div class="grid g-3">
-      <div class="card reveal"><h3>Traders manuales</h3><p>Reducí la ejecución repetitiva y los errores operativos que aparecen al operar a mano.</p></div>
-      <div class="card reveal"><h3>Usuarios de señales</h3><p>Dejá de copiar manualmente cada operación desde un canal o grupo.</p></div>
-      <div class="card reveal"><h3>Traders automatizados</h3><p>Integrá un canal de señales con ejecución automática directamente en MT5.</p></div>
-    </div>
-  </div>
+<section id="ubicacion" class="sec w" aria-labelledby="t-ubi">
+ <div class="loc rv">
+  <div class="l"><div><span class="tag">Ubicación</span><h2 id="t-ubi">En Zona Granja, cerca de todo</h2></div>
+   <ul class="rows">
+    <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-pin"/></svg><span><small>Dirección</small><b>Montecarlo 38, Puerto Iguazú, Misiones</b></span></li>
+    <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-pin"/></svg><span><small>Cerca</small><b>Biocentro Iguazú 10 min a pie · La Aripuca 9 min a pie</b></span></li>
+    <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-clock"/></svg><span><small>Horarios</small><b>Check-in 14:00 · Check-out 11:00</b></span></li>
+    <li><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg><span><small>WhatsApp</small><b>+54 9 3757 548838</b></span></li>
+   </ul>
+   <div><a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Montecarlo+38+Puerto+Iguaz%C3%BA+Misiones" target="_blank" rel="noopener noreferrer">Abrir en Google Maps<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a></div></div>
+  <div class="photo"><img src="img/cartel-900.webp" srcset="img/cartel-900.webp 900w, img/cartel-1600.webp 1600w" sizes="(min-width:1000px) 600px, 90vw" width="1600" height="1067" alt="Cartel de El Manantial de Iguazú con el número de WhatsApp" loading="lazy" decoding="async"></div>
+ </div>
 </section>
 
-<section class="section" id="planes" style="background:var(--bg-2)">
-  <div class="wrap">
-    <div class="section-head center reveal">
-      <span class="eyebrow">Planes</span>
-      <h2>Elegí cómo querés usarlo.</h2>
-      <p>Desde solo las señales hasta la ejecución 100% automática. Suscripción mensual o anual. Cancelás cuando quieras.</p>
-    </div>
-    <div id="brokerSlot"></div>
-    <div class="toggle reveal">
-      <button id="mLabel">Mensual</button>
-      <div class="switch annual" id="billSwitch" role="switch" aria-checked="true" tabindex="0" aria-label="Cambiar facturación mensual o anual"><span class="knob"></span></div>
-      <button id="aLabel" class="on">Anual <span class="save-badge" id="saveBadge">3 meses gratis</span></button>
-    </div>
-    <div class="price-grid" id="priceGrid"></div>
-    <div class="capital-note reveal">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
-      <p><b>Compatible con cuentas desde <span data-cfg="minCapital">US$300</span>.</b> El capital mínimo depende de tu broker y del riesgo que configures. No es una promesa de rentabilidad.</p>
-    </div>
-    <div id="licenseSlot"></div>
-    <div id="paySlot"></div>
-    <p class="mono" style="text-align:center;color:var(--muted-2);font-size:.76rem;margin-top:26px">Precios en dólares. Editables desde el objeto CONFIG.</p>
-  </div>
+<section id="preguntas" class="sec w" aria-labelledby="t-faq">
+ <div class="faq rv"><div><span class="tag">Preguntas frecuentes</span><h2 id="t-faq">Lo que más nos preguntan</h2></div><div><details><summary>¿Cómo reservo directo?</summary><p>Elegí cabaña, fechas y cantidad de personas en el formulario y vas a ver el valor por noche y el total. Al tocar Reservar se abre WhatsApp con todos los datos de tu reserva; ahí te confirmamos disponibilidad y la seña.</p></details>
+<details><summary>¿Hay descuento por reservar directo?</summary><p>Sí. Reservando directo con el complejo tenés un descuento especial; te pasamos el valor según las fechas por WhatsApp.</p></details>
+<details><summary>¿Qué tipos de cabaña hay y para cuántas personas?</summary><p>Hay tres tipos: cabaña monoambiente para 2 o 3 personas, cabaña familiar de dos plantas para 3 a 6 personas y cabaña deluxe para 4 o 5 personas.</p></details>
+<details><summary>¿Cuánto cuestan las cabañas por noche?</summary><p>Valores a partir del 16 de diciembre: monoambiente $70.000 (2 personas) y $75.000 (3); familiar $90.000 (3), $100.000 (4), $110.000 (5) y $120.000 (6); deluxe $120.000 (4) y $130.000 (5). Para otras fechas, consultá por WhatsApp.</p></details>
+<details><summary>¿Los menores pagan?</summary><p>Los menores de 6 años no pagan.</p></details>
+<details><summary>¿Hay descuento para pastores?</summary><p>Sí: 80% de descuento a pastores, solo en temporada baja por 3 noches, fuera de fin de semana largo y fuera de Navidad o Año Nuevo.</p></details>
+<details><summary>¿Tienen pileta?</summary><p>Sí, hay dos piscinas, una de ellas semi climatizada, con deck y reposeras.</p></details>
+<details><summary>¿Qué incluyen las cabañas?</summary><p>Blanquería completa, wifi, TV, pava eléctrica, cocina con horno, aire acondicionado, agua potable fría y caliente, cubiertos y vajilla, heladera, tender, bolsas de residuos y papel higiénico. La cabaña deluxe suma estacionamiento techado y parrilla privada.</p></details>
+<details><summary>¿Ofrecen desayuno o comidas?</summary><p>No, el complejo no ofrece comidas (ni desayuno, almuerzo o cena). Las cabañas tienen cocina y el quincho tiene parrilla para cocinar.</p></details>
+<details><summary>¿Se aceptan mascotas?</summary><p>No, el complejo no admite mascotas.</p></details>
+<details><summary>¿A qué hora es el check-in y el check-out?</summary><p>El check-in es desde las 14:00 y el check-out hasta las 11:00.</p></details>
+<details><summary>¿Dónde queda El Manantial de Iguazú?</summary><p>En Montecarlo 38, Zona Granja, Puerto Iguazú, Misiones. Está a unos 2,6 km del centro, a 10 minutos a pie del Biocentro Iguazú y a 9 minutos a pie de La Aripuca.</p></details>
+<details><summary>¿Tiene wifi, parrilla y estacionamiento?</summary><p>Sí: wifi, quincho con parrilla amplia y estacionamiento gratuito frente a la cabaña, dentro del predio.</p></details></div></div>
 </section>
+</main>
 
-<section class="section" id="incluye">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Qué incluye</span>
-      <h2>Todo lo necesario para operar el sistema.</h2>
-    </div>
-    <div class="includes">
-      <div class="inc reveal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>EA para MetaTrader 5</div>
-      <div class="inc reveal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Acceso a señales</div>
-      <div class="inc reveal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Ejecución automática</div>
-      <div class="inc reveal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Gestión de riesgo</div>
-      <div class="inc reveal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Actualizaciones</div>
-      <div class="inc reveal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Dashboard en pantalla</div>
-      <div class="inc reveal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Reportes y registro</div>
-      <div class="inc reveal"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Sistema de licencias</div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="soporte">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Soporte · Onboarding</span>
-      <h2>No lo instalás solo.</h2>
-      <p>La parte técnica la resolvemos con vos. Los planes Pro y VIP incluyen instalación asistida por control remoto: coordinás una sesión y dejamos el sistema funcionando en tu MetaTrader 5.</p>
-    </div>
-    <div class="support-grid">
-      <div class="support-card primary reveal">
-        <h3>Instalación asistida</h3>
-        <p>Coordinás por Telegram y, con tu autorización, nos conectamos por AnyDesk para instalar y configurar el EA en tu cuenta.</p>
-        <ol class="support-steps">
-          <li><span class="sn">1</span><span>Escribinos por Telegram y coordinamos día y horario.</span></li>
-          <li><span class="sn">2</span><span>Descargás AnyDesk desde los links de acá abajo.</span></li>
-          <li><span class="sn">3</span><span>Nos compartís tu ID y aceptás la conexión cuando estés listo.</span></li>
-          <li><span class="sn">4</span><span>Instalamos el EA, configuramos tu riesgo y probamos en demo.</span></li>
-        </ol>
-        <a class="wa-btn" id="waInstall" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M21.5 4.5L2.5 12l6 2m13-9.5l-3 15-7-5.5m10-9.5L8.5 14m0 0v5l3.5-3.5" stroke="#04121A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Solicitar instalación asistida
-        </a>
-        <p class="plan-note">◆ Incluida en planes Pro y VIP</p>
-      </div>
-
-      <div class="support-card reveal">
-        <h3>Descargar AnyDesk</h3>
-        <p>La sesión de control remoto se hace con AnyDesk. Descargalo antes de la cita:</p>
-        <div class="dl-row">
-          <a class="dl" href="#" id="dlWin" target="_blank" rel="noopener">
-            <span class="os"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="1"/><path d="M3 10h18M8 20h8"/></svg></span>
-            <span class="dt"><b>AnyDesk para Windows</b><span>Recomendado para MetaTrader 5</span></span>
-            <span class="arr">↗</span>
-          </a>
-          <a class="dl" href="#" id="dlMac" target="_blank" rel="noopener">
-            <span class="os"><svg viewBox="0 0 24 24"><path d="M12 6c1-2 3-2 3-2s.2 2-1 3.2C12.8 8.4 11 8 11 8s0-1 1-2z"/><path d="M8 9c-2 0-4 2-4 5s2 7 4 7c1.5 0 2-.8 3-.8s1.5.8 3 .8c2 0 4-4 4-7"/></svg></span>
-            <span class="dt"><b>AnyDesk para macOS</b><span>Para cuentas MT5 en Mac</span></span>
-            <span class="arr">↗</span>
-          </a>
-        </div>
-        <div class="safety">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-          <p><b>Tu control, siempre.</b> La conexión la aceptás vos y la cortás cuando quieras. Nunca vamos a pedirte la contraseña de tu cuenta ni claves de trading. Vos ves todo lo que se hace en pantalla en tiempo real.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="transparencia" style="background:var(--bg-2)">
-  <div class="wrap">
-    <div class="transparency reveal">
-      <div class="transp-grid">
-        <div>
-          <span class="eyebrow">Transparencia</span>
-          <p class="transp-quote" style="margin-top:16px">"Un sistema serio también muestra sus pérdidas. No prometemos resultados garantizados: mostramos datos, explicamos los riesgos y dejamos que cada usuario decida cuánto está dispuesto a asumir."</p>
-        </div>
-        <div class="transp-metrics">
-          <div class="tm"><div class="k">Sin promesas</div><div class="v" style="font-size:1.15rem">No garantizamos ganancias</div></div>
-          <div class="tm"><div class="k">Riesgo claro</div><div class="v" style="font-size:1.15rem">Explicado desde el inicio</div></div>
-          <div class="tm"><div class="k">Vos decidís</div><div class="v" style="font-size:1.15rem">Cuánto riesgo asumís</div></div>
-          <div class="tm"><div class="k">Herramienta</div><div class="v" style="font-size:1.15rem">Software, no asesoría</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="testimonios">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Testimonios</span>
-      <h2>Espacio reservado para experiencias reales.</h2>
-      <p>Cuando haya usuarios con feedback verificable, sus testimonios se muestran acá.</p>
-    </div>
-    <div class="grid g-3">
-      <div class="card reveal"><p style="color:var(--muted-2);font-style:italic">"[TESTIMONIO REAL DEL CLIENTE]"</p><p class="mono" style="margin-top:16px;font-size:.74rem;color:var(--cyan-deep)">[NOMBRE · PAÍS · PLAN]</p></div>
-      <div class="card reveal"><p style="color:var(--muted-2);font-style:italic">"[TESTIMONIO REAL DEL CLIENTE]"</p><p class="mono" style="margin-top:16px;font-size:.74rem;color:var(--cyan-deep)">[NOMBRE · PAÍS · PLAN]</p></div>
-      <div class="card reveal"><p style="color:var(--muted-2);font-style:italic">"[TESTIMONIO REAL DEL CLIENTE]"</p><p class="mono" style="margin-top:16px;font-size:.74rem;color:var(--cyan-deep)">[NOMBRE · PAÍS · PLAN]</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="faq" style="background:var(--bg-2)">
-  <div class="wrap">
-    <div class="section-head center reveal">
-      <span class="eyebrow">FAQ</span>
-      <h2>Preguntas frecuentes.</h2>
-    </div>
-    <div class="faq-list" id="faqList"></div>
-  </div>
-</section>
-
-<section class="final">
-  <div class="wrap reveal">
-    <h2>Dejá que el robot haga <span class="grad">la parte repetitiva.</span></h2>
-    <p>Conectá tu MetaTrader 5 y automatizá la ejecución de las señales autorizadas.</p>
-    <a href="#planes" class="btn btn-primary">Comenzar ahora<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-  </div>
-</section>
-
-<section class="section" style="padding-top:0">
-  <div class="wrap">
-    <div class="disclaimer reveal">
-      <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L14.4 3.9a2 2 0 00-3.4 0z"/></svg>
-      <p><b>Herramienta de automatización de uso personal.</b> Origen Trade Bridge es un producto de software que automatiza la ejecución de señales en MetaTrader 5. Operar en mercados financieros implica riesgo de pérdida de capital, que puede ser total. Este producto no constituye asesoramiento financiero ni de inversión, y no garantiza resultados ni rentabilidad. Los resultados pasados no aseguran resultados futuros. Cada usuario es responsable de las decisiones que toma sobre su propia cuenta.</p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <a href="#" class="brand">
-          <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-            <rect x="2" y="2" width="36" height="36" rx="9" stroke="#38E5FF" stroke-width="1.5"/>
-            <path d="M11 25 L17 19 L22 23 L29 14" stroke="#38E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="29" cy="14" r="2.4" fill="#38E5FF"/>
-          </svg>
-          <span>Origen Trade Bridge</span>
-        </a>
-        <p>Sistema de automatización que conecta señales privadas con MetaTrader 5. Un producto de software a medida.</p>
-      </div>
-      <div class="foot-col">
-        <h4>Producto</h4>
-        <a href="#como">Cómo funciona</a><a href="#riesgo">Gestión de riesgo</a><a href="#planes">Planes</a><a href="#faq">FAQ</a>
-      </div>
-      <div class="foot-col">
-        <h4>Legal</h4>
-        <a href="#">Términos</a><a href="#">Privacidad</a><a href="#transparencia">Riesgos</a><a href="#" data-cfg="brand.contact">Soporte</a>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <span>© <span id="year"></span> Origen Trade Bridge</span>
-      <span class="mono">El trading de instrumentos financieros implica riesgo de pérdida de capital.</span>
-    </div>
-  </div>
+<footer id="reservar" class="pie w" aria-labelledby="t-res">
+ <div class="t2 rv"><div><h2 id="t-res">Reservá directo y ahorrá</h2><p>Elegí cabaña, fechas y personas: ves el total al instante y confirmás la reserva por WhatsApp.</p></div><form class="reserva" aria-label="Reservar por WhatsApp">
+ <label>Cabaña<select name="cabana" required><option value="">Elegí</option><option value="mono">Monoambiente</option><option value="fam">Familiar</option><option value="dlx">Deluxe</option></select></label>
+ <label>Entrada<input type="date" name="entrada" required></label>
+ <label>Salida<input type="date" name="salida" required></label>
+ <label>Personas<select name="personas" required><option value="">Elegí</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+ <button class="btn" type="submit">Reservar por WhatsApp<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></button>
+ <p class="sug" aria-live="polite"></p>
+ <p class="estado" role="status"></p>
+ <a class="wa btn ol" href="#" hidden target="_blank" rel="noopener noreferrer">Abrir WhatsApp</a>
+</form></div>
+ <div class="bot">
+  <div><strong>Cabañas El Manantial de Iguazú</strong><br>Montecarlo 38, Puerto Iguazú, Misiones, Argentina</div>
+  <div>WhatsApp: <a href="https://wa.me/5493757548838" rel="noopener noreferrer">+54 9 3757 548838</a><br>Check-in desde las 14:00 · Check-out hasta las 11:00</div>
+  <div>Instagram: <a href="https://www.instagram.com/elmanantialdeiguazu" target="_blank" rel="noopener noreferrer">@elmanantialdeiguazu</a><br>Sitio por <a href="https://www.instagram.com/origen.studioiguazu" target="_blank" rel="noopener noreferrer">ORIGEN Studio Iguazú</a></div>
+ </div>
 </footer>
-
-<!-- ============ MODAL CHECKOUT ============ -->
-<div class="modal-ov" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="mkPlanName" hidden>
-  <div class="modal">
-    <button class="modal-x" id="mkClose" aria-label="Cerrar">✕</button>
-    <div class="modal-hd">
-      <span class="eyebrow">Suscripción</span>
-      <div class="modal-plan">
-        <h3 id="mkPlanName">Plan</h3>
-        <div class="mp-price" id="mkPlanPrice"></div>
-      </div>
-      <p class="modal-sub" id="mkPlanSub"></p>
-    </div>
-    <div class="modal-bd">
-      <div class="promo-box" id="mkPromoBox">
-        <label class="promo-label" for="mkPromoInput">Código de descuento <span>(opcional)</span></label>
-        <div class="promo-fields show" id="mkPromoFields">
-          <input type="text" id="mkPromoInput" placeholder="Ej: el código de tu socio" autocomplete="off" maxlength="24">
-          <button type="button" class="promo-apply" id="mkPromoApply">Aplicar</button>
-        </div>
-        <div class="promo-msg" id="mkPromoMsg"></div>
-      </div>
-      <div class="pay-tabs" id="mkTabs"></div>
-      <div class="pay-box">
-        <div class="pbt" id="mkPayHead"></div>
-        <div class="pay-id-row">
-          <span class="pil" id="mkPayLabel">Pay ID</span>
-          <span class="piv" id="mkPayId">—</span>
-          <button class="copy-btn" id="mkCopy" type="button">Copiar</button>
-        </div>
-        <div id="mkNetWarn"></div>
-      </div>
-      <div class="pay-steps">
-        <div class="pay-step"><span class="ps-n">1</span><span>Transferí el monto a los datos de arriba.</span></div>
-        <div class="pay-step"><span class="ps-n">2</span><span>Tocá el botón y envianos el comprobante por Telegram.</span></div>
-        <div class="pay-step"><span class="ps-n">3</span><span>Verificamos el pago y activamos tu acceso.</span></div>
-      </div>
-      <div class="terms-box" id="mkTerms"></div>
-      <label class="terms-check">
-        <input type="checkbox" id="mkAgree">
-        <span>Leí y acepto los <a href="#" id="mkTermsLink">términos y condiciones</a>, incluida la naturaleza de riesgo del trading y que los pagos en cripto son irreversibles.</span>
-      </label>
-      <button class="modal-pay-btn" id="mkPayBtn" disabled>
-        <svg viewBox="0 0 24 24" fill="none"><path d="M21.5 4.5L2.5 12l6 2m13-9.5l-3 15-7-5.5m10-9.5L8.5 14m0 0v5l3.5-3.5" stroke="#04121A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Ya pagué — enviar comprobante por Telegram
-      </button>
-      <p class="modal-hint">Se abre Telegram con tu pedido listo. Adjuntá la captura del pago y activamos tu acceso apenas lo verifiquemos.</p>
-    </div>
-  </div>
-</div>
+<a class="fab" href="https://wa.me/5493757548838?text=Hola!%20Quiero%20consultar%20por%20las%20caba%C3%B1as%20de%20El%20Manantial%20de%20Iguaz%C3%BA." target="_blank" rel="noopener noreferrer" aria-label="Escribinos por WhatsApp"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-chat"/></svg><span>WhatsApp</span></a>
 
 <script>
-/* ============================================================
-   CONFIG — editá acá todo: marca, precios, métricas, FAQ.
-   ============================================================ */
-const CONFIG = {
-  brand:{ name:"Origen Trade Bridge", contact:"#" },
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Contacto por Telegram. telegram: tu usuario sin @ (ej. "origentrade") o el path de t.me.
-  support:{
-    telegram:"Origen2026",
-    msgPlan:"Hola, quiero suscribirme a Origen Trade Bridge. ¿Me pasás los pasos?",
-    msgInstall:"Hola, soy suscriptor de Origen Trade Bridge y quiero coordinar la instalación asistida por AnyDesk.",
-    anydeskWin:"https://anydesk.com/es/downloads/windows",
-    anydeskMac:"https://anydesk.com/es/downloads/mac-os"
-  },
+/* Header: transparente sobre la foto, sólido al bajar */
+const top=$('.top');
+const solid=()=>top.classList.toggle('solid',scrollY>60);
+addEventListener('scroll',solid,{passive:true});solid();
 
-  // Pago con Binance Pay / USDT. payId: tu Binance Pay ID (dejalo vacío hasta cargarlo).
-  payment:{
-    binance:{ show:true, payId:"1000427170", // ← Binance Pay ID
-      msg:"Hola, ya realicé el pago con Binance Pay (USDT) y quiero enviar el comprobante para activar mi acceso." },
-    // USDT en red Tron. address debe usarse SOLO por red TRC20 (Tron). Otra red = fondos perdidos.
-    trc20:{ show:true, network:"TRC20 (Tron)", address:"TNKEb6HgzLauXwf4wWi1XasHam8AqaVZCU" }
-  },
+/* Aparición suave de bloques */
+const rv=$$('.rv');
+if('IntersectionObserver' in window&&!reduce){
+ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
+ rv.forEach(el=>io.observe(el));
+}else rv.forEach(el=>el.classList.add('on'));
 
-  // Oferta destacada: acceso GRATIS abriendo cuenta con el broker asociado (modelo IB).
-  //  brokerUrl: tu link de socio/IB.  brokerName: nombre del broker.
-  brokerOffer:{
-    show:true,
-    badge:"★ La opción más conveniente",
-    title:"Acceso gratis con nuestro broker asociado",
-    tagline:"Gratis abriendo tu cuenta con VT Markets",
-    priceStrike:"US$20",     // precio tachado (lo que costaría sin el link)
-    price:"GRATIS",           // precio final con el link de socio
-    priceNote:"abriendo cuenta con VT Markets",
-    minDeposit:"US$500",
-    brokerName:"VT Markets",
-    inviteCode:"zU1WofJD",   // código de invitación (por si el link no lo autocompleta)
-    brokerUrl:"https://www.vtmarkets.com/trade-now/?affid=MTA0NDAx&invitecode=zU1WofJD",
-    features:[
-      "EA para MetaTrader 5 + señales incluidas",
-      "Ejecución automática en 3 tramos",
-      "Gestión de riesgo con break-even y trailing",
-      "Sin suscripción mensual y sin pago único",
-      "Solo abrí tu cuenta con nuestro enlace de VT Markets",
-      "Depósito mínimo de US$500 en el broker"
-    ],
-    // Aviso de transparencia (obligatorio mostrarlo).
-    disclosure:"El acceso es gratuito porque recibimos una comisión de VT Markets a través de su programa de socios cuando abrís tu cuenta con nuestro enlace y operás. No tiene costo adicional para vos. Si preferís no usar nuestro enlace, el acceso tiene un pago único de US$20.",
-    cta:"Abrir cuenta en VT Markets"
-  },
-
-  // Resumen de términos mostrado en el checkout. La página completa de Términos se arma aparte.
-  termsShort:[
-    ["Naturaleza del producto","Origen Trade Bridge es una herramienta de software de automatización. No es asesoramiento financiero ni una garantía de rentabilidad."],
-    ["Riesgo","Operar en mercados financieros implica riesgo de pérdida de capital, que puede ser total. Cada usuario es responsable de las decisiones sobre su propia cuenta."],
-    ["Pagos en cripto","Los pagos en USDT / Binance Pay son irreversibles. No hay reversión automática como en una tarjeta. Las bajas y cualquier devolución se coordinan según la política vigente."],
-    ["Suscripción","El acceso se activa tras confirmarse el pago y continúa hasta el fin del período abonado. Podés cancelar cuando quieras."]
-  ],
-
-  // Códigos de afiliados / descuento. code: lo que tipea el cliente (en MAYÚSCULAS).
-  //  discount: % que se descuenta al cliente.  commission: % que le pagás al influencer (solo tu referencia, NO se muestra).
-  //  Agregá o quitá códigos libremente. Solo funcionan los que están acá.
-  affiliates:{
-    enabled:true,
-    codes:[
-      { code:"PABLOK", discount:10, commission:25, ref:"Pablo" }
-    ]
-  },
-  hero:{ sub:"Un sistema que recibe señales profesionales y las ejecuta automáticamente en tu MetaTrader 5, con gestión de riesgo gestionada por el robot para proteger tu capital. Sin copiar operaciones a mano, sin decisiones emocionales." },
-
-  // Capital mínimo — dato técnico de accesibilidad, NO una promesa de ganancia.
-  minCapital:"US$300",
-
-  // annualFactor: meses que se pagan en el plan anual (12 = sin descuento; 9 = 3 meses gratis ≈ 25% off).
-  pricing:{
-    annualFactor:9,
-    plans:[
-      { name:"Signals", monthly:29, featured:false, cta:"Suscribirme",
-        tagline:"Solo el canal de señales",
-        features:["Señales privadas en tiempo real","Formato listo para operar","Reconexión ante cortes","Para quien opera por su cuenta"] },
-      { name:"Auto", featured:true, monthly:59, cta:"Suscribirme",
-        tagline:"Señales + ejecución automática",
-        features:["Todo lo de Signals","EA para MetaTrader 5","Ejecución automática en 3 tramos","Gestión de riesgo en escalera","1 cuenta MT5","Instalación autogestionada (guía)"] },
-      { name:"VIP", monthly:99, featured:false, cta:"Suscribirme",
-        tagline:"Auto + atención personalizada",
-        features:["Todo lo de Auto","Hasta 3 cuentas MT5","Instalación asistida por AnyDesk","Atención y soporte prioritario","Acompañamiento en la configuración"] }
-    ],
-    // Licencia única del EA (pago una vez, sin señales). Puerta de entrada sin suscripción.
-    license:{ show:true, name:"Licencia EA", price:"US$390", cta:"Comprar licencia",
-      tagline:"Pago único · el EA sin señales",
-      features:["EA para MetaTrader 5 (licencia permanente)","Ejecución en 3 tramos + gestión de riesgo","Usás tus propias señales","Actualizaciones del EA","Sin suscripción mensual"] }
-  },
-  faq:[
-    { q:"¿Qué necesito para utilizar el sistema?", a:"Una cuenta de MetaTrader 5 con un broker, el EA instalado y una suscripción activa. La configuración inicial se hace una sola vez." },
-    { q:"¿Necesito MetaTrader 5?", a:"Sí. El sistema ejecuta las operaciones a través de MetaTrader 5, por lo que es requisito tener la plataforma con una cuenta operativa." },
-    { q:"¿El EA copia las señales automáticamente?", a:"El EA recibe las señales autorizadas desde nuestra infraestructura y las ejecuta según los parámetros de riesgo que configuraste, sin que tengas que copiarlas a mano." },
-    { q:"¿Tengo que estar frente a la computadora?", a:"No para ejecutar. El EA opera de forma desatendida en tu MT5. Conviene que la plataforma o el VPS donde corre esté encendido y con conexión." },
-    { q:"¿Puedo elegir el riesgo?", a:"Sí. Definís el riesgo por operación, la pérdida diaria máxima, las sesiones de trading y otros límites antes de operar." },
-    { q:"¿Con qué brokers funciona?", a:"Funciona con brokers que ofrezcan MetaTrader 5. La lista de brokers compatibles se confirma según cada caso." },
-    { q:"¿Puedo utilizar una cuenta demo?", a:"Sí. Podés correr el sistema en una cuenta demo para conocer su funcionamiento antes de usarlo en una cuenta real." },
-    { q:"¿Qué pasa si pierdo dinero?", a:"Operar en mercados financieros implica riesgo de pérdida. El sistema incluye controles de gestión de riesgo, pero no elimina la posibilidad de pérdidas. Sos responsable de tu cuenta." },
-    { q:"¿Cómo es el acceso con broker asociado?", a:"Es la opción más económica: pagás un monto único bajo (en lugar de suscripción mensual) y abrís tu cuenta con nuestro broker asociado usando nuestro enlace, con un depósito mínimo. El acceso es más barato porque recibimos una comisión del broker por tu actividad, sin costo adicional para vos." },
-    { q:"¿Cómo puedo pagar la suscripción?", a:"Aceptamos pago con Binance Pay en USDT o transferencia USDT por red TRC20 (Tron). Primero hacés la transferencia, después nos enviás el comprobante por Telegram y activamos tu acceso apenas lo verificamos." },
-    { q:"¿Puedo cancelar mi suscripción?", a:"Sí. La suscripción es mensual o anual y podés cancelarla cuando quieras; el acceso continúa hasta el fin del período pago." },
-    { q:"¿El sistema garantiza ganancias?", a:"No. Ningún sistema de trading puede garantizar ganancias. Origen Trade Bridge es una herramienta de automatización; no promete ni asegura rentabilidad." }
-  ]
-};
-
-const get=(o,p)=>p.split('.').reduce((a,k)=>a&&a[k],o);
-document.querySelectorAll('[data-cfg]').forEach(el=>{const v=get(CONFIG,el.dataset.cfg);if(v!=null)el.textContent=v;});
-document.getElementById('year').textContent=new Date().getFullYear();
-
-/* ---------- contacto: links Telegram + AnyDesk ---------- */
-const S=CONFIG.support||{};
-const tgUser=(S.telegram||'').replace(/^@/,'').replace(/^https?:\/\/(t\.me|telegram\.me)\//i,'');
-const tg=(msg)=> tgUser ? `https://t.me/${tgUser}?text=${encodeURIComponent(msg||'')}` : '#';
-const wa=tg; // alias para compatibilidad con llamadas existentes
-const setHref=(id,url)=>{const el=document.getElementById(id);if(el&&url)el.href=url;};
-setHref('waInstall', tg(S.msgInstall));
-setHref('dlWin', S.anydeskWin);
-setHref('dlMac', S.anydeskMac);
-
-const priceGrid=document.getElementById('priceGrid');
-const billSwitch=document.getElementById('billSwitch');
-const mLabel=document.getElementById('mLabel'), aLabel=document.getElementById('aLabel');
-let annual=true;
-const checkSvg='<svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5"/></svg>';
-function renderPlans(){
-  const f=CONFIG.pricing.annualFactor;
-  const savedMonths=12-f;
-  let html=CONFIG.pricing.plans.map(p=>{
-    const monthlyPrice = annual ? Math.round(p.monthly*f/12) : p.monthly;
-    const priceBlock = annual
-      ? `<div class="price"><s>US$${p.monthly}</s>US$${monthlyPrice}<small>/mes</small></div>
-         <div class="price-note">US$${p.monthly*f} facturado al año · ${savedMonths} meses gratis</div>`
-      : `<div class="price">US$${monthlyPrice}<small>/mes</small></div>
-         <div class="price-note">facturado mensual</div>`;
-    return `<article class="plan${p.featured?' featured':''}">
-      ${p.featured?'<span class="badge">★ Más elegido</span>':''}
-      <div class="pname">${p.name}</div>
-      ${p.tagline?`<div class="ptag">${p.tagline}</div>`:''}
-      ${priceBlock}
-      <ul>${p.features.map(x=>`<li>${checkSvg}<span>${x}</span></li>`).join('')}</ul>
-      <button type="button" class="btn ${p.featured?'btn-primary':'btn-ghost'}" data-checkout
-        data-name="${p.name}" data-price="US$${monthlyPrice}/mes" data-sub="${annual?`US$${p.monthly*f} facturado al año`:'facturado mensual'} · ${p.tagline||''}">${p.cta}</button>
-    </article>`;
-  }).join('');
-  priceGrid.innerHTML=html;
-}
-
-/* badge de ahorro según el factor anual */
-(function(){
-  const b=document.getElementById('saveBadge');
-  if(b) b.textContent=(12-CONFIG.pricing.annualFactor)+' meses gratis';
-})();
-
-/* licencia única del EA (pago una vez) */
-(function(){
-  const L=CONFIG.pricing.license, slot=document.getElementById('licenseSlot');
-  if(!L||!L.show||!slot) return;
-  const feat=L.features.map(x=>`<li>${checkSvg}<span>${x}</span></li>`).join('');
-  slot.innerHTML=`<div class="license-card reveal">
-    <div class="lc-left">
-      <div class="lc-tag">Sin suscripción</div>
-      <h3>${L.name}</h3>
-      <div class="lc-desc">${L.tagline||''}</div>
-      <ul class="lc-feats">${feat}</ul>
-    </div>
-    <div class="lc-right">
-      <div class="lc-price">${L.price}</div>
-      <div class="lc-once">PAGO ÚNICO</div>
-      <button type="button" class="btn btn-ghost" data-checkout
-        data-name="${L.name}" data-price="${L.price}" data-sub="Pago único · ${L.tagline||''}">${L.cta}</button>
-    </div>
-  </div>`;
-})();
-
-/* oferta destacada: acceso vía broker (IB) */
-(function(){
-  const B=CONFIG.brokerOffer, slot=document.getElementById('brokerSlot');
-  if(!B||!B.show||!slot) return;
-  const chk='<svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5"/></svg>';
-  const feats=(B.features||[]).map(x=>`<li>${chk}<span>${x}</span></li>`).join('');
-  // botón: abre WhatsApp para coordinar (y el link del broker si está cargado)
-  const tgMsg=`Hola, quiero el acceso gratis abriendo mi cuenta con ${B.brokerName||'el broker asociado'}. ¿Me pasás los pasos para registrarme con tu enlace y activar el sistema?`;
-  const href = B.brokerUrl ? B.brokerUrl : tg(tgMsg);
-  slot.innerHTML=`<div class="broker-offer reveal">
-    <div class="broker-badge">${B.badge||'★ Recomendado'}</div>
-    <div class="bo-grid">
-      <div class="bo-left">
-        <h3>${B.title}</h3>
-        <div class="bo-tag">${B.tagline||''}</div>
-        <ul class="bo-feats">${feats}</ul>
-        <div class="bo-disclosure">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>
-          <p>${B.disclosure||''}</p>
-        </div>
-      </div>
-      <div class="bo-right">
-        <div class="bo-price">${B.priceStrike?`<s>${B.priceStrike}</s> `:''}${B.price}</div>
-        <div class="bo-price-note">${B.priceNote||''}</div>
-        <div class="bo-deposit">Depósito mínimo: <b>${B.minDeposit||'—'}</b> en el broker</div>
-        <a class="bo-cta" href="${href}" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#04121A" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          ${B.cta||'Empezar'}
-        </a>
-        ${B.inviteCode?`<div class="bo-invite">Código de invitación: <b>${B.inviteCode}</b></div>`:''}
-      </div>
-    </div>
-  </div>`;
-})();
-
-/* pago con Binance Pay / USDT */
-(function(){
-  const P=(CONFIG.payment&&CONFIG.payment.binance)||{}, slot=document.getElementById('paySlot');
-  if(!P.show||!slot) return;
-  const usdtIcon='<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#26A17B" stroke-width="1.6"/><path d="M12 7v2m0 0c-2.8 0-5 .6-5 1.4s2.2 1.4 5 1.4 5-.6 5-1.4S14.8 9 12 9zm0 2.8V17" stroke="#26A17B" stroke-width="1.4" stroke-linecap="round"/></svg>';
-  const binIcon='<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 2.5L12 8 9.5 5.5 12 3zM6 9l2.5 2.5L6 14l-2.5-2.5L6 9zm12 0l2.5 2.5L18 14l-2.5-2.5L18 9zm-6 3l2.5 2.5L12 20l-2.5-2.5L12 12z" fill="#F0B90B"/></svg>';
-  slot.innerHTML=`<div class="pay-strip reveal">
-    <span class="pay-ico">${binIcon}Binance Pay</span>
-    <span class="pay-sep"></span>
-    <span class="pay-ico">${usdtIcon}USDT</span>
-    <span class="pay-sep"></span>
-    <span class="pay-txt">Binance Pay o red TRC20 (Tron)</span>
-    <a class="pay-btn" href="${tg(P.msg)}" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#1A1400" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 4.5L2.5 12l6 2m13-9.5l-3 15-7-5.5"/></svg>
-      Envié el pago
-    </a>
-  </div>`;
-})();
-function setBilling(a){
-  annual=a;
-  billSwitch.classList.toggle('annual',a);
-  billSwitch.setAttribute('aria-checked',String(a));
-  mLabel.classList.toggle('on',!a); aLabel.classList.toggle('on',a);
-  renderPlans();
-}
-billSwitch.addEventListener('click',()=>setBilling(!annual));
-billSwitch.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();setBilling(!annual);}});
-mLabel.addEventListener('click',()=>setBilling(false));
-aLabel.addEventListener('click',()=>setBilling(true));
-renderPlans();
-
-const faqList=document.getElementById('faqList');
-faqList.innerHTML=CONFIG.faq.map((f,i)=>`
-  <div class="faq-item">
-    <button class="faq-q" aria-expanded="false" aria-controls="fa${i}">${f.q}<span class="plus">+</span></button>
-    <div class="faq-a" id="fa${i}" role="region"><p>${f.a}</p></div>
-  </div>`).join('');
-faqList.querySelectorAll('.faq-q').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const item=btn.parentElement, ans=item.querySelector('.faq-a'), open=item.classList.toggle('open');
-    btn.setAttribute('aria-expanded',String(open));
-    ans.style.maxHeight = open ? ans.scrollHeight+'px' : null;
-  });
+/* Formularios de reserva -> precio en vivo -> WhatsApp */
+const WA='5493757548838',DESDE='2026-12-16';
+const TAR={mono:{n:'Monoambiente',p:{2:70000,3:75000}},fam:{n:'Familiar',p:{3:90000,4:100000,5:110000,6:120000}},dlx:{n:'Deluxe',p:{4:120000,5:130000}}};
+const plata=n=>'$'+n.toLocaleString('es-AR');
+const tope=c=>Math.max(...Object.keys(TAR[c].p));
+const tarifa=(c,p)=>{const k=Object.keys(TAR[c].p).map(Number);return p>Math.max(...k)?0:TAR[c].p[Math.max(p,Math.min(...k))]};
+const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const hoy=iso(new Date());
+const fecha=s=>s.split('-').reverse().join('/');
+$$('form.reserva').forEach(f=>{
+ const el=f.elements,sug=f.querySelector('.sug'),estado=f.querySelector('.estado'),wa=f.querySelector('.wa');
+ el.entrada.min=hoy;el.salida.min=hoy;
+ const datos=()=>{
+  const c=el.cabana.value,p=+el.personas.value,ok=c&&p&&tarifa(c,p);
+  el.personas.setCustomValidity(c&&p&&!ok?`La cabaña ${TAR[c].n.toLowerCase()} es para hasta ${tope(c)} personas.`:'');
+  const noches=el.entrada.value&&el.salida.value?Math.round((new Date(el.salida.value)-new Date(el.entrada.value))/864e5):0;
+  return {c,p,ok,noche:ok||0,noches,total:(ok||0)*Math.max(noches,0)};
+ };
+ const ver=()=>{
+  const d=datos();wa.hidden=true;estado.textContent='';
+  if(!d.c||!d.p){sug.textContent='';return}
+  if(!d.ok){sug.textContent=el.personas.validationMessage;return}
+  sug.textContent=`Cabaña ${TAR[d.c].n} para ${d.p} · ${plata(d.noche)} por noche`+(d.noches>0?` · ${d.noches} ${d.noches===1?'noche':'noches'}: total ${plata(d.total)}`:'')+(el.entrada.value&&el.entrada.value<DESDE?' · Valores desde el 16/12; para fechas anteriores te confirmamos el precio por WhatsApp.':'');
+ };
+ el.entrada.addEventListener('change',()=>{
+  const d=new Date(el.entrada.value+'T12:00');d.setDate(d.getDate()+1);
+  el.salida.min=el.entrada.value?iso(d):hoy;
+  if(el.salida.value&&el.salida.value<el.salida.min)el.salida.value='';
+ });
+ f.addEventListener('change',ver);
+ f.addEventListener('submit',e=>{
+  e.preventDefault();
+  const d=datos();
+  if(!f.reportValidity()||d.noches<1)return;
+  const msg=`Hola! Quiero reservar en Cabañas El Manantial de Iguazú.\nCabaña: ${TAR[d.c].n}\nEntrada: ${fecha(el.entrada.value)}\nSalida: ${fecha(el.salida.value)} (${d.noches} ${d.noches===1?'noche':'noches'})\nPersonas: ${d.p}\nValor por noche: ${plata(d.noche)}\nTotal: ${plata(d.total)}\n¿Me confirman disponibilidad y los datos para la seña?`;
+  const url='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+  wa.href=url;wa.hidden=false;
+  estado.textContent='Listo, armamos tu reserva. Si WhatsApp no se abre solo, tocá el botón.';
+  try{window.open(url,'_blank','noopener')}catch(_){}
+ });
 });
-
-const navToggle=document.getElementById('navToggle'), navLinks=document.getElementById('navLinks');
-navToggle.addEventListener('click',()=>{const open=navLinks.classList.toggle('open');navToggle.setAttribute('aria-expanded',String(open));});
-navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navLinks.classList.remove('open');navToggle.setAttribute('aria-expanded','false');}));
-
-const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
-document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
-
-/* ---------- MODAL CHECKOUT ---------- */
-(function(){
-  const ov=document.getElementById('checkoutModal');
-  if(!ov) return;
-  const elName=document.getElementById('mkPlanName'), elPrice=document.getElementById('mkPlanPrice'),
-        elSub=document.getElementById('mkPlanSub'), elPayId=document.getElementById('mkPayId'),
-        elPayLabel=document.getElementById('mkPayLabel'), elPayHead=document.getElementById('mkPayHead'),
-        elNetWarn=document.getElementById('mkNetWarn'), elTabs=document.getElementById('mkTabs'),
-        elTerms=document.getElementById('mkTerms'), elAgree=document.getElementById('mkAgree'),
-        elPayBtn=document.getElementById('mkPayBtn'), elCopy=document.getElementById('mkCopy'),
-        elClose=document.getElementById('mkClose'),
-        elPromoFields=document.getElementById('mkPromoFields'),
-        elPromoInput=document.getElementById('mkPromoInput'), elPromoApply=document.getElementById('mkPromoApply'),
-        elPromoMsg=document.getElementById('mkPromoMsg');
-  const PAY=CONFIG.payment||{};
-  const binIcon='<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 2.5L12 8 9.5 5.5 12 3zM6 9l2.5 2.5L6 14l-2.5-2.5L6 9zm12 0l2.5 2.5L18 14l-2.5-2.5L18 9zm-6 3l2.5 2.5L12 20l-2.5-2.5L12 12z" fill="#F0B90B"/></svg>';
-  const tronIcon='<svg viewBox="0 0 24 24" fill="none"><path d="M4 5l16 3-9 12L4 5z" stroke="#EF0027" stroke-width="1.5" stroke-linejoin="round"/></svg>';
-
-  // construir métodos disponibles según CONFIG
-  const methods=[];
-  if(PAY.binance&&PAY.binance.show) methods.push({
-    id:'binance', label:'Binance Pay', icon:binIcon, head:binIcon+'Pago con Binance Pay · USDT',
-    valLabel:'Pay ID', value:PAY.binance.payId||'', addr:false, warn:''
-  });
-  if(PAY.trc20&&PAY.trc20.show) methods.push({
-    id:'trc20', label:'USDT TRC20', icon:tronIcon, head:tronIcon+'USDT · red '+(PAY.trc20.network||'TRC20'),
-    valLabel:'Dirección', value:PAY.trc20.address||'', addr:true,
-    warn:'Enviá <b>únicamente por red '+(PAY.trc20.network||'TRC20')+'</b>. Si usás otra red (ERC20, BEP20), los fondos se pierden. Verificá la red antes de enviar.'
-  });
-
-  let active=methods[0]?methods[0].id:null;
-  let current={name:'',priceRaw:'',promo:null};
-
-  // ---- afiliados / descuento ----
-  const AFF=CONFIG.affiliates||{enabled:false,codes:[]};
-  function findCode(input){
-    if(!AFF.enabled||!input) return null;
-    const q=input.trim().toUpperCase();
-    return (AFF.codes||[]).find(c=>c.code.toUpperCase()===q)||null;
-  }
-  // extrae el número de un precio tipo "US$44/mes" → {num:44, suffix:"/mes", cur:"US$"}
-  function parsePrice(str){
-    const m=String(str).match(/^([^\d]*)(\d+(?:[.,]\d+)?)(.*)$/);
-    if(!m) return null;
-    return {cur:m[1], num:parseFloat(m[2].replace(',','.')), suffix:m[3]};
-  }
-  function applyDiscount(priceStr,pct){
-    const p=parsePrice(priceStr); if(!p) return {display:priceStr};
-    const nn=Math.round(p.num*(1-pct/100));
-    return { display:`<s>${p.cur}${p.num}${p.suffix}</s>${p.cur}${nn}${p.suffix}`, plain:`${p.cur}${nn}${p.suffix}` };
-  }
-  function renderPrice(){
-    if(current.promo){
-      const d=applyDiscount(current.priceRaw,current.promo.discount);
-      elPrice.innerHTML=(d.display||current.priceRaw).replace('/mes','<small>/mes</small>');
-    } else {
-      elPrice.innerHTML=current.priceRaw.replace('/mes','<small>/mes</small>');
-    }
-  }
-
-  // pintar tabs (solo si hay más de un método)
-  if(methods.length>1){
-    elTabs.innerHTML=methods.map(m=>`<button type="button" class="pay-tab${m.id===active?' on':''}" data-m="${m.id}">${m.icon}${m.label}</button>`).join('');
-    elTabs.querySelectorAll('.pay-tab').forEach(t=>t.addEventListener('click',()=>{active=t.dataset.m;paintMethod();}));
-  } else { elTabs.style.display='none'; }
-
-  function paintMethod(){
-    const m=methods.find(x=>x.id===active); if(!m) return;
-    elTabs.querySelectorAll('.pay-tab').forEach(t=>t.classList.toggle('on',t.dataset.m===active));
-    elPayHead.innerHTML=m.head;
-    elPayLabel.textContent=m.valLabel;
-    elPayId.textContent=m.value||'se coordina por Telegram';
-    elPayId.classList.toggle('addr',!!m.addr);
-    elNetWarn.innerHTML=m.warn?`<div class="net-warn"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L14.4 3.9a2 2 0 00-3.4 0z"/></svg><p>${m.warn}</p></div>`:'';
-    elCopy.style.display=m.value?'':'none';
-    elCopy.textContent='Copiar'; elCopy.classList.remove('done');
-  }
-
-  elTerms.innerHTML='<h4>Términos y condiciones</h4>'+
-    (CONFIG.termsShort||[]).map(t=>`<p><b style="color:var(--text)">${t[0]}.</b> ${t[1]}</p>`).join('');
-
-  function open(name,price,sub){
-    current={name,priceRaw:price,promo:null};
-    elName.textContent=name;
-    elSub.textContent=sub||'';
-    renderPrice();
-    // reset promo UI
-    elPromoInput.value=''; elPromoMsg.textContent=''; elPromoMsg.className='promo-msg';
-    elAgree.checked=false; elPayBtn.disabled=true;
-    active=methods[0]?methods[0].id:null; paintMethod();
-    ov.hidden=false; requestAnimationFrame(()=>ov.classList.add('open'));
-    document.body.style.overflow='hidden';
-  }
-  function close(){ ov.classList.remove('open'); document.body.style.overflow=''; setTimeout(()=>{ov.hidden=true;},250); }
-
-  document.querySelectorAll('[data-checkout]').forEach(btn=>{
-    btn.addEventListener('click',()=>open(btn.dataset.name,btn.dataset.price,btn.dataset.sub));
-  });
-  document.getElementById('priceGrid').addEventListener('click',e=>{
-    const b=e.target.closest('[data-checkout]'); if(b) open(b.dataset.name,b.dataset.price,b.dataset.sub);
-  });
-
-  elAgree.addEventListener('change',()=>{ elPayBtn.disabled=!elAgree.checked; });
-  elClose.addEventListener('click',close);
-
-  // ---- promo listeners ----
-  if(!AFF.enabled){ document.getElementById('mkPromoBox').style.display='none'; }
-  function tryPromo(){
-    const c=findCode(elPromoInput.value);
-    if(c){
-      current.promo=c; renderPrice();
-      elPromoMsg.textContent=`✓ Código ${c.code} aplicado · ${c.discount}% de descuento`;
-      elPromoMsg.className='promo-msg ok';
-    } else {
-      current.promo=null; renderPrice();
-      elPromoMsg.textContent='Código no válido. Revisá que esté bien escrito.';
-      elPromoMsg.className='promo-msg err';
-    }
-  }
-  elPromoApply.addEventListener('click',tryPromo);
-  elPromoInput.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();tryPromo();} });
-  ov.addEventListener('click',e=>{ if(e.target===ov) close(); });
-  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!ov.hidden) close(); });
-
-  elCopy.addEventListener('click',()=>{
-    const m=methods.find(x=>x.id===active); if(!m||!m.value) return;
-    navigator.clipboard?.writeText(m.value).then(()=>{
-      elCopy.textContent='Copiado ✓'; elCopy.classList.add('done');
-      setTimeout(()=>{elCopy.textContent='Copiar'; elCopy.classList.remove('done');},1800);
-    });
-  });
-
-  elPayBtn.addEventListener('click',()=>{
-    if(elPayBtn.disabled) return;
-    const m=methods.find(x=>x.id===active)||{};
-    let via='';
-    if(m.id==='binance') via=m.value?` con Binance Pay (USDT) al Pay ID ${m.value}`:' con Binance Pay (USDT)';
-    else if(m.id==='trc20') via=` con USDT por red ${(PAY.trc20.network||'TRC20')}`+(m.value?` a la dirección ${m.value}`:'');
-    // precio final (con descuento si hay promo)
-    let priceTxt=current.priceRaw, promoTxt='';
-    if(current.promo){
-      const d=applyDiscount(current.priceRaw,current.promo.discount);
-      priceTxt=(d.plain||current.priceRaw)+` (antes ${current.priceRaw})`;
-      promoTxt=` Usé el código ${current.promo.code}.`;
-    }
-    const msg=`Hola, ya realicé el pago del plan ${current.name} (${priceTxt})${via}.${promoTxt} Adjunto el comprobante para activar mi acceso. Acepto los términos y condiciones.`;
-    window.open(tg(msg),'_blank','noopener');
-  });
+$$('[data-p]').forEach(b=>b.addEventListener('click',()=>{
+ $$('form.reserva').forEach(f=>{f.elements.cabana.value=b.dataset.c;f.elements.personas.value=b.dataset.p;f.dispatchEvent(new Event('change'))});
+}));
 })();
 </script>
 </body>
