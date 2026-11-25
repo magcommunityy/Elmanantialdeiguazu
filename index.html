@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<!-- Cabañas El Manantial de Iguazú — v4.3 -->
+<!-- Cabañas El Manantial de Iguazú — v4.5 -->
 <html lang="es-AR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Cabañas en Puerto Iguazú con pileta, para familias | El Manantial</title>
 <meta name="description" content="Complejo de cabañas tranquilo y familiar en Puerto Iguazú: pileta semi climatizada, parque con juegos y quincho. Para 2 a 6 personas, precios en pesos. Reservá por WhatsApp.">
 <link rel="canonical" href="https://elmanantialdeiguazu.com/">
@@ -23,7 +23,10 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f3a2c'/%3E%3Cpath d='M10 38 32 17l22 21v4H10z' fill='%23e3cc94'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="preload" as="image" href="img/piscina-juegos-movil.webp" media="(max-width:640px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/piscina-juegos-900.webp" imagesrcset="img/piscina-juegos-900.webp 900w, img/piscina-juegos-1536.webp 1536w" imagesizes="100vw" media="(min-width:641px)" fetchpriority="high">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"></noscript>
 <script>document.documentElement.classList.add('js')</script>
 <style>
 :root{--bg:#eceae2;--g:#1f3a2c;--g2:#dde7d8;--ink:#17231c;--mut:#566259;--r:28px}
@@ -192,6 +195,24 @@ details p{margin-top:.7rem;color:var(--mut);max-width:40rem}
  .m1 img{min-height:240px;order:-1}
  .bt.big{grid-column:auto}
  .feat article{min-height:200px}
+}
+.bar{display:none}
+@media(max-width:640px){
+ .feat,.cab,.int,.bento,.tar,.rev{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin-inline:-8px;padding:0 8px 8px;scrollbar-width:none;overscroll-behavior-x:contain}
+ .feat>*,.cab>*,.int>*,.bento>*,.tar>*,.rev>*{flex:0 0 84%;scroll-snap-align:center;min-width:0}
+ .feat::-webkit-scrollbar,.cab::-webkit-scrollbar,.int::-webkit-scrollbar,.bento::-webkit-scrollbar,.tar::-webkit-scrollbar,.rev::-webkit-scrollbar{display:none}
+ .js .feat .rv,.js .cab .rv,.js .int .rv,.js .bento .rv,.js .tar .rv,.js .rev .rv,.feat.rv,.cab.rv,.int.rv,.bento.rv,.tar.rv,.rev.rv{opacity:1;transform:none}
+ .bt,.bt.big{min-height:340px}
+ .int figure{aspect-ratio:4/5}
+ .feat article{min-height:220px}
+ body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+ .fab,.top .btn,.hero .acts{display:none}
+ .bar{position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:.5rem;background:#fff;border-radius:22px;padding:8px 8px 8px 16px;box-shadow:0 10px 30px -8px rgba(0,0,0,.45);transition:transform .3s}
+ .bar.off{transform:translateY(160%)}
+ .bar>div{margin-right:auto;line-height:1.2}
+ .bar small{display:block;color:var(--mut);font-size:.75rem}
+ .bar .btn{min-height:48px}
+ .wa-i{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#167a43;color:#fff;flex:none}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .rv{opacity:1;transform:none;transition:none}*{transition:none!important}}
 </style>
@@ -541,7 +562,7 @@ details p{margin-top:.7rem;color:var(--mut);max-width:40rem}
 </div></header>
 <main>
 <section id="inicio" class="hero" aria-labelledby="t-inicio">
- <img class="bg" src="img/piscina-juegos-900.webp" srcset="img/piscina-juegos-900.webp 900w, img/piscina-juegos-1536.webp 1536w" sizes="100vw" width="1536" height="1024" alt="Piletas, deck y juegos para chicos de Cabañas El Manantial en Puerto Iguazú, rodeados de selva" fetchpriority="high">
+ <picture><source media="(max-width:640px)" srcset="img/piscina-juegos-movil.webp"><img class="bg" src="img/piscina-juegos-900.webp" srcset="img/piscina-juegos-900.webp 900w, img/piscina-juegos-1536.webp 1536w" sizes="100vw" width="1536" height="1024" alt="Piletas, deck y juegos para chicos de Cabañas El Manantial en Puerto Iguazú, rodeados de selva" fetchpriority="high"></picture>
  <div class="hero-in">
   <div>
    <p class="eb">Cabañas El Manantial de Iguazú</p>
@@ -716,6 +737,7 @@ details p{margin-top:.7rem;color:var(--mut);max-width:40rem}
 </footer>
 <a class="fab" href="https://wa.me/5493757548838?text=Hola!%20Quiero%20consultar%20por%20las%20caba%C3%B1as%20de%20El%20Manantial%20de%20Iguaz%C3%BA." target="_blank" rel="noopener noreferrer" aria-label="Escribinos por WhatsApp"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-chat"/></svg><span>WhatsApp</span></a>
 
+<div class="bar" role="region" aria-label="Reserva rápida"><div><b>Desde $70.000</b><small>por noche · en pesos</small></div><a class="btn" href="#reservar">Reservar<span class="ar"><svg class="i" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a><a class="wa-i" href="https://wa.me/5493757548838?text=Hola!%20Quiero%20consultar%20por%20las%20caba%C3%B1as%20de%20El%20Manantial%20de%20Iguaz%C3%BA." target="_blank" rel="noopener noreferrer" aria-label="Escribinos por WhatsApp"><svg class="i" aria-hidden="true" viewBox="0 0 24 24" style="width:24px;height:24px"><use href="#i-chat"/></svg></a></div>
 <script>
 (()=>{
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -777,6 +799,10 @@ $$('form.reserva').forEach(f=>{
 $$('[data-p]').forEach(b=>b.addEventListener('click',()=>{
  $$('form.reserva').forEach(f=>{f.elements.cabana.value=b.dataset.c;f.elements.personas.value=b.dataset.p;f.dispatchEvent(new Event('change'))});
 }));
+
+/* Barra de reserva en celular: se oculta cuando hay un formulario a la vista */
+const bar=$('.bar');
+if(bar&&'IntersectionObserver' in window){const vis=new Set();const ob=new IntersectionObserver(es=>{es.forEach(e=>e.isIntersecting?vis.add(e.target):vis.delete(e.target));bar.classList.toggle('off',vis.size>0)});$$('form.reserva').forEach(f=>ob.observe(f))}
 })();
 </script>
 </body>
